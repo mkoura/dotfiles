@@ -80,9 +80,9 @@ if [ -x /usr/bin/dircolors ]; then
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
 
-    #alias grep='grep --color=auto'
-    #alias fgrep='fgrep --color=auto'
-    #alias egrep='egrep --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
 fi
 
 # some more ls aliases
@@ -111,4 +111,4 @@ if ! shopt -oq posix; then
 fi
 
 # solarized skin for mc
-export MC_SKIN=$HOME/.config/mc/solarized.ini
+[ -e $HOME/.config/mc/solarized.ini ] && export MC_SKIN=$HOME/.config/mc/solarized.ini
