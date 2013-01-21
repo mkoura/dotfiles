@@ -1,0 +1,25 @@
+# turn visual bell off
+vbell on
+vbell_msg "   Crrr  ----  Crrrr!!  "
+
+# detach on hangup
+autodetach on
+
+# don't display the copyright page
+startup_message off
+
+# emulate .logout message
+pow_detach_msg "Screen session of \$LOGNAME \$:cr:\$:nl:ended."
+
+# make the shell in every window a login shell
+#shell -$SHELL
+
+# set every new windows hardstatus line to somenthing descriptive
+defhstatus "^Et"
+
+defscrollback 1500
+
+# don't kill window after the process died
+# zombie "^["
+
+hardstatus alwayslastline "[%H] %w "
