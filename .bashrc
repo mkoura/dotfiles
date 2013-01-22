@@ -72,20 +72,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-# some more ls aliases
-#alias ll='ls -l'
-#alias la='ls -A'
-#alias l='ls -CF'
-
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -97,5 +83,12 @@ if ! shopt -oq posix; then
   fi
 fi
 
+
 # solarized skin for mc
 [ -e $HOME/.config/mc/solarized.ini ] && export MC_SKIN=$HOME/.config/mc/solarized.ini
+
+# aliases
+#alias ll='ls -l'
+#alias la='ls -A'
+#alias l='ls -CF'
+[ -e "/usr/lib/mc/mc-wrapper.sh" ] && alias mc='. /usr/lib/mc/mc-wrapper.sh'
