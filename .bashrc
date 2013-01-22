@@ -85,7 +85,11 @@ fi
 
 
 # solarized skin for mc
-[ -e $HOME/.config/mc/solarized.ini ] && export MC_SKIN=$HOME/.config/mc/solarized.ini
+if [ -e $HOME/.config/mc/solarized.ini ]; then
+  export MC_SKIN=$HOME/.config/mc/solarized.ini
+elif [ -e $HOME/.mc/solarized.ini ]; then
+  export MC_SKIN=$HOME/.mc/solarized.ini
+fi
 
 # aliases
 #alias ll='ls -l'
