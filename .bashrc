@@ -8,6 +8,9 @@ case $- in
       *) return;;
 esac
 
+# path to history file
+HISTFILE=~/.bash_history
+
 # don't put duplicate lines or lines starting with space in the history.
 # erase duplicates.
 # See bash(1) for more options
