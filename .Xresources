@@ -42,10 +42,13 @@
 
 
 ! urxvt settings
-URxvt.font         : -*-terminus-medium-r-normal-*-14-*-*-*-*-*-*-*
-URxvt.boldFont     : -*-terminus-bold-r-normal-*-14-*-*-*-*-*-*-*
-URxvt.scrollBar    : false
-URxvt.pointerBlank : true
+
+URxvt*font         : -*-terminus-medium-r-normal-*-14-*-*-*-*-*-*-*
+URxvt*boldFont     : -*-terminus-bold-r-normal-*-14-*-*-*-*-*-*-*
+URxvt*scrollBar    : false
+URxvt*pointerBlank : true
+URxvt*iconFile     : /usr/share/icons/Tango/scalable/apps/utilities-terminal.svg
+URxvt*geometry     : 145x45
 
 !URxvt.perl-ext-common : default,matcher
 ! clickable links
