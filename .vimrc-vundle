@@ -84,3 +84,6 @@ set showcmd
 " bash-like tab completion
 set wildmode=longest,list,full
 set wildmenu
+
+" mouse support
+set mouse=a
