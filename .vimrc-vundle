@@ -42,6 +42,7 @@ let g:ycm_autoclose_preview_window_after_completion=1
 let g:UltiSnipsExpandTrigger="<c-j>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+let g:UltiSnipsListSnippets="<c-e>"
 let g:UltiSnipsEditSplit="vertical"
 
 
