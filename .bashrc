@@ -86,7 +86,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-
 # solarized skin for mc
 if [ -e $HOME/.config/mc/solarized.ini ]; then
   export MC_SKIN=$HOME/.config/mc/solarized.ini
@@ -98,4 +97,6 @@ fi
 #alias ll='ls -l'
 #alias la='ls -A'
 #alias l='ls -CF'
+alias tmux="tmux -8"
+
 [ -e "/usr/lib/mc/mc-wrapper.sh" ] && alias mc='. /usr/lib/mc/mc-wrapper.sh'
