@@ -64,3 +64,6 @@ set wildmenu
 
 " mouse support
 set mouse=a
+
+" command output in new tab
+command! -nargs=* -complete=shellcmd R tabnew | setlocal buftype=nofile bufhidden=hide noswapfile | r !<args>
