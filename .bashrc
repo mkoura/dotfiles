@@ -86,6 +86,10 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# editor = vim
+export EDITROR=vim
+export VISUAL=vim
+
 # solarized skin for mc
 if [ -e $HOME/.config/mc/solarized.ini ]; then
   export MC_SKIN=$HOME/.config/mc/solarized.ini
