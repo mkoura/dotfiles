@@ -20,6 +20,8 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'SirVer/ultisnips'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'scrooloose/syntastic'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'majutsushi/tagbar'
 
 filetype plugin indent on
 
@@ -27,8 +29,12 @@ filetype plugin indent on
 "
 " Nerdtree
 "
-map <f2> :NERDTreeToggle<CR>
+nmap <f2> :NERDTreeToggle<CR>
 
+"
+" Tagbar
+"
+nmap <F8> :TagbarToggle<CR>
 
 "
 " YouCompleteMe
@@ -65,7 +71,7 @@ set wildmode=longest,list,full
 set wildmenu
 
 " mouse support
-set mouse=a
+"set mouse=a
 
 " command output in new tab
 command! -nargs=* -complete=shellcmd R tabnew | setlocal buftype=nofile bufhidden=hide noswapfile | r !<args>
