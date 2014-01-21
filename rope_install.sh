@@ -25,15 +25,15 @@ function check_vim
 
 function get_or_update
 {
-    if [ -e $1 ]
+    if [ -e "$1" ]
     then
-        cd $1
-        echo Pulling updates from $2
+        cd "$1"
+        echo Pulling updates from "$2"
         hg pull > /dev/null
         cd ..
     else
-        echo Cloning $2
-        hg clone $2 $1 > /dev/null
+        echo Cloning "$2"
+        hg clone "$2" "$1" > /dev/null
     fi
 }
 
@@ -54,9 +54,9 @@ function pull_sources
 
 function gen_vim_config
 {
-    echo "let \$PYTHONPATH .= \":`pwd`/pylibs\"" > rope.vim
-    echo "source `pwd`/src/ropevim/ropevim.vim" >> rope.vim
-    echo "Now, just add \"source `pwd`/rope.vim\" to your .vimrc"
+    echo "let \$PYTHONPATH .= \":${PWD}/pylibs\"" > rope.vim
+    echo "source ${PWD}/src/ropevim/ropevim.vim" >> rope.vim
+    echo "Now, just add \"source ${PWD}/rope.vim\" to your .vimrc"
 }
 
 check_vim
