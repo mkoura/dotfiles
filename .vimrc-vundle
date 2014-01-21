@@ -15,13 +15,15 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " Installed bundles
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'Lokaltog/vim-easymotion'
 Bundle 'scrooloose/nerdtree'
+Bundle 'majutsushi/tagbar'
 Bundle 'tpope/vim-fugitive'
 Bundle 'SirVer/ultisnips'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'scrooloose/syntastic'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'majutsushi/tagbar'
+Bundle 'jmcantrell/vim-virtualenv'
 
 filetype plugin indent on
 
@@ -62,6 +64,12 @@ let ropevim_enable_shortcuts=0
 let ropevim_goto_def_newwin=1
 
 
+"
+" Syntastic
+"
+let g:syntastic_python_flake8_args="--max-line-length=160"
+
+
 " syntax highlighting
 syntax enable
 
@@ -82,6 +90,9 @@ set wildmenu
 
 " mouse support
 "set mouse=a
+
+" switch files without saving them first
+set hidden
 
 " command output in new tab
 command! -nargs=* -complete=shellcmd R tabnew | setlocal buftype=nofile bufhidden=hide noswapfile | r !<args>
