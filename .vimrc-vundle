@@ -17,9 +17,13 @@ Bundle 'gmarik/vundle'
 " Installed bundles
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'Lokaltog/vim-easymotion'
+Bundle 'vim-scripts/Gundo'
 Bundle 'scrooloose/nerdtree'
+Bundle 'kien/ctrlp.vim'
+Bundle 'jlanzarotta/bufexplorer'
 Bundle 'majutsushi/tagbar'
 Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-surround'
 Bundle 'SirVer/ultisnips'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'scrooloose/syntastic'
@@ -31,12 +35,17 @@ filetype plugin indent on
 "
 " Nerdtree
 "
-nmap <f2> :NERDTreeToggle<CR>
+nnoremap <F2> :NERDTreeToggle<CR>
+
+"
+" Gundo
+"
+nnoremap <F4> :GundoToggle<CR>
 
 "
 " Tagbar
 "
-nmap <F8> :TagbarToggle<CR>
+nnoremap <F8> :TagbarToggle<CR>
 
 "
 " YouCompleteMe
@@ -69,6 +78,9 @@ let ropevim_goto_def_newwin=1
 "
 let g:syntastic_python_flake8_args="--max-line-length=160"
 
+
+" matchit
+runtime macros/matchit.vim
 
 " syntax highlighting
 syntax enable
