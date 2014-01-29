@@ -1,5 +1,10 @@
-" <leader>g for goto definition or declaration
-nnoremap <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+" Ycm shortcuts
+"nnoremap <buffer> <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+" rope shortcuts
+"nnoremap <buffer> <C-c>g :call RopeGotoDefinition()<CR>
+"nnoremap <buffer> <C-c>d :call RopeShowDoc()<CR>
+"nnoremap <buffer> <C-c>f :call RopeFindOccurrences()<CR>
 
 " set vertical column to mark 80 characters
 if exists('+colorcolumn')
@@ -9,9 +14,4 @@ else
 endif
 
 " use 4 spaces for indentation
-setlocal expandtab tabstop=4 shiftwidth=4
-
-" rope shortcuts
-nnoremap <C-c>g :call RopeGotoDefinition()<CR>
-nnoremap <C-c>d :call RopeShowDoc()<CR>
-nnoremap <C-c>f :call RopeFindOccurrences()<CR>
+setlocal expandtab shiftround tabstop=4 shiftwidth=4 softtabstop=4

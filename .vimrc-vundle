@@ -14,15 +14,21 @@ call vundle#rc()
 " required!
 Bundle 'gmarik/vundle'
 
-" Installed bundles
+" installed bundles
+"Bundle 'jmcantrell/vim-virtualenv' " use mkoura/vim-virtualenv until PYTHONPATH fixed
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'SirVer/ultisnips'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'altercation/vim-colors-solarized'
+Bundle 'benmills/vimux'
+Bundle 'bling/vim-airline'
+Bundle 'davidhalter/jedi-vim'
 Bundle 'jlanzarotta/bufexplorer'
-Bundle 'jmcantrell/vim-virtualenv'
 Bundle 'kien/ctrlp.vim'
 Bundle 'majutsushi/tagbar'
+Bundle 'mkoura/vim-virtualenv'
+Bundle 'myusuf3/numbers.vim'
+Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-fugitive'
@@ -36,21 +42,56 @@ filetype plugin indent on
 " Nerdtree
 "
 nnoremap <F2> :NERDTreeToggle<CR>
+"let NERDTreeQuitOnOpen=1
+let NERDTreeShowHidden=1
+
 
 "
 " Gundo
 "
 nnoremap <F4> :GundoToggle<CR>
 
+
 "
 " Tagbar
 "
 nnoremap <F8> :TagbarToggle<CR>
 
+
 "
 " YouCompleteMe
 "
+let g:ycm_add_preview_to_completeopt=1
 let g:ycm_autoclose_preview_window_after_completion=1
+" disable for python, use jedi-vim instead
+let g:ycm_filetype_blacklist = {
+      \ 'python' : 1,
+      \ 'tagbar' : 1,
+      \ 'qf' : 1,
+      \ 'notes' : 1,
+      \ 'markdown' : 1,
+      \ 'unite' : 1,
+      \ 'text' : 1,
+      \ 'vimwiki' : 1,
+      \ 'pandoc' : 1
+      \}
+
+"let g:ycm_collect_identifiers_from_tags_files=1 " enable completion from tags
+
+
+" enable omni completion
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+"autocmd FileType python setlocal omnifunc=pythoncomplete#Complete " use jedi-vim instead
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+
+
+"
+" jedi-vim
+"
+let g:jedi#popup_on_dot=0
 
 
 "
@@ -66,45 +107,101 @@ let g:UltiSnipsEditSplit="vertical"
 "
 " Rope
 "
-source ~/Source/repos/rope/rope.vim
-" disable default shortcuts
-let ropevim_enable_shortcuts=0
-" open external definitions in new buffer
-let ropevim_goto_def_newwin=1
+"source ~/Source/repos/rope/rope.vim
+"let ropevim_enable_shortcuts=0 " disable default shortcuts
+"let ropevim_goto_def_newwin=1  " open external definitions in new buffer
 
 
 "
 " Syntastic
 "
 let g:syntastic_python_flake8_args="--max-line-length=160"
+let g:syntastic_python_checkers=['pylint', 'flake8']
+"let g:syntastic_python_checkers=['flake8']
 
 
-" matchit
+"
+" vim-airline
+"
+set laststatus=2 " show statusline all the time
+let g:airline_theme = 'solarized' " make sure solarized is used
+
+
+"
+" supertab
+"
+"autocmd FileType * if &ft != 'python' | let b:SuperTabDisabled = 1 | endif
+
+
+" load matchit
 runtime macros/matchit.vim
 
-" syntax highlighting
-syntax enable
 
-" color scheme
+"
+" colors
+"
+" highlight extra whitespace
+" MUST be inserted BEFORE the colorscheme command
+autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+
+syntax enable
+set t_Co=16
 set background=dark
 colorscheme solarized
-set t_Co=16
 
-" highlight line with cursor
-set cursorline
 
-" show that vim is waiting for key
-set showcmd
+let mapleader = ',' " remap <leader>
+set directory=~/.vim/swap// " where to save swap files
+set undodir=~/.vim/undo//   " where to save undo histories
+set undofile " persistent undo
+set undolevels=500  " maximum number of changes that can be undone
+set undoreload=5000 " maximum number lines to save for undo on a buffer reload
+set cursorline " highlight line with cursor
+set showcmd " show that vim is waiting for key
+set showmatch " show matching brackets/parenthesis
+set backspace=indent,eol,start " backspace for dummies
+set number " line numbers on
+set hlsearch " highlight search terms
+"set mouse=a " set mouse=a
+set hidden " switch files without saving them first
+set clipboard=unnamedplus " use + register for copy-paste
+"set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " highlight problematic whitespace
+set pastetoggle=<F12> " pastetoggle (sane indentation on pastes)
 
 " bash-like tab completion
 set wildmode=longest,list,full
 set wildmenu
 
-" mouse support
-"set mouse=a
+" don't save backup files
+set nobackup
+set nowritebackup
 
-" switch files without saving them first
-set hidden
+
+"
+" Shortcuts
+"
+
+" change Working Directory to that of the current file
+cmap cd. lcd %:p:h
+
+" visual shifting (does not exit Visual mode)
+vnoremap < <gv
+vnoremap > >gv
+
+" allow using the repeat operator with a visual selection (!)
+" http://stackoverflow.com/a/8064607/127816
+vnoremap . :normal .<CR>
+
+" for when you forget to sudo.. Really Write the file.
+cmap w!! w !sudo tee % >/dev/null
+
+" map <Leader>ff to display all lines with keyword under cursor
+" and ask which one to jump to
+nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
+
+" remove trailing whitespaces and ^M chars
+command! -bang Rmw %s/\s\+$//e<bang>
 
 " command output in new tab
-command! -nargs=* -complete=shellcmd R tabnew | setlocal buftype=nofile bufhidden=hide noswapfile | r !<args>
+command! -nargs=* -complete=shellcmd R tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | r !<args>
