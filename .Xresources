@@ -52,6 +52,8 @@ URxvt*scrollBar    : false
 URxvt*pointerBlank : true
 URxvt*iconFile     : /usr/share/icons/Tango/scalable/apps/utilities-terminal.svg
 URxvt*geometry     : 145x45
+! Alt key fix when UTF8 used
+URxvt*meta8        : false
 
 !URxvt.perl-ext-common : default,matcher
 ! clickable links
