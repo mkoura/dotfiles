@@ -1,5 +1,8 @@
 set nocompatible
 
+" remap <leader> to ,
+let mapleader = ',' " remap <leader>
+
 "
 " Vundle setting
 "
@@ -78,7 +81,6 @@ let g:ycm_filetype_blacklist = {
 
 "let g:ycm_collect_identifiers_from_tags_files=1 " enable completion from tags
 
-
 " enable omni completion
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
@@ -102,6 +104,7 @@ let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 let g:UltiSnipsListSnippets="<c-e>"
 let g:UltiSnipsEditSplit="vertical"
+"let g:UltiSnipsUsePythonVersion=2
 
 
 "
@@ -151,7 +154,6 @@ set background=dark
 colorscheme solarized
 
 
-let mapleader = ',' " remap <leader>
 set directory=~/.vim/swap// " where to save swap files
 set undodir=~/.vim/undo//   " where to save undo histories
 set undofile " persistent undo
@@ -215,8 +217,16 @@ cmap w!! w !sudo tee % >/dev/null
 " and ask which one to jump to
 nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
 
-" remove trailing whitespaces and ^M chars
+
+"
+" Commands
+"
+
+" Rmw = remove trailing whitespaces and ^M chars
 command! -bang Rmw %s/\s\+$//e<bang>
 
-" command output in new tab
+" Cdc = Change to Directory of Current file
+command Cdc lcd %:p:h
+
+" R = command output in new tab
 command! -nargs=* -complete=shellcmd R tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | r !<args>
