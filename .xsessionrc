@@ -13,8 +13,8 @@ tmpcache.sh
 xset b off
 
 # sync clipboard and selection buffer
-autocutsel -fork
-autocutsel -selection PRIMARY -buttonup -fork
+#autocutsel -fork
+#autocutsel -selection PRIMARY -buttonup -fork
 
 # urxvt daemon mode
 urxvtd -q -o -f
