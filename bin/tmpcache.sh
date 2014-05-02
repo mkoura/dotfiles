@@ -4,7 +4,7 @@
 [ ! -e ~/.tmpcache ] && exit 0
 
 # nothing to do if cache already exists
-[ -h ~/.cache/.tmpcache ] && exit 0
+[ -e ~/.cache/.tmpcache ] && exit 0
 
 # remove dangling symlink
 rm -f ~/.cache/.tmpcache
