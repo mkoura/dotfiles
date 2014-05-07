@@ -26,6 +26,7 @@ Bundle 'altercation/vim-colors-solarized'
 Bundle 'benmills/vimux'
 Bundle 'bling/vim-airline'
 Bundle 'davidhalter/jedi-vim'
+Bundle 'honza/vim-snippets'
 Bundle 'jlanzarotta/bufexplorer'
 Bundle 'kien/ctrlp.vim'
 Bundle 'majutsushi/tagbar'
@@ -79,7 +80,10 @@ let g:ycm_filetype_blacklist = {
       \ 'pandoc' : 1
       \}
 
-"let g:ycm_collect_identifiers_from_tags_files=1 " enable completion from tags
+" enable completion from tags
+"let g:ycm_collect_identifiers_from_tags_files=1
+" fallback path to a compilation flags config file
+let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
 
 " enable omni completion
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -184,6 +188,12 @@ set nowritebackup
 " Shortcuts
 "
 
+" swap to the last viewed tab
+" http://stackoverflow.com/questions/2119754/switch-to-last-active-tab-in-vim
+let g:lasttab = 1
+nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
+au TabLeave * let g:lasttab = tabpagenr()
+
 " change Working Directory to that of the current file
 cmap cd. lcd %:p:h
 
@@ -224,9 +234,6 @@ nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<C
 
 " Rmw = remove trailing whitespaces and ^M chars
 command! -bang Rmw %s/\s\+$//e<bang>
-
-" Cdc = Change to Directory of Current file
-command Cdc lcd %:p:h
 
 " R = command output in new tab
 command! -nargs=* -complete=shellcmd R tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | r !<args>
