@@ -102,6 +102,6 @@ fi
 #alias la='ls -A'
 #alias l='ls -CF'
 #alias tmux="tmux -8"
-alias lsperm='stat -c "%a %n'
+alias lsperm='stat -c "%a %n"'
 
 [ -e "/usr/lib/mc/mc-wrapper.sh" ] && alias mc='. /usr/lib/mc/mc-wrapper.sh'
