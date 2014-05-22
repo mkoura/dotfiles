@@ -93,11 +93,19 @@ autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 
+" GoTo command
+autocmd FileType c,cpp,javascript nnoremap <buffer> <leader>jd :YcmCompleter GoTo<CR>
+autocmd FileType c,cpp,javascript nnoremap <buffer> <leader>ja :YcmCompleter GoToDefinition<CR>
+
 
 "
 " jedi-vim
 "
 let g:jedi#popup_on_dot=0
+let g:jedi#goto_definitions_command="<leader>jd"
+let g:jedi#goto_assignments_command="<leader>ja"
+let g:jedi#rename_command="<leader>re"
+let g:jedi#usages_command="<leader>us"
 
 
 "
