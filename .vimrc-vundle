@@ -166,6 +166,8 @@ set t_Co=16
 set background=dark
 colorscheme solarized
 
+autocmd FileType c,cpp,javascript,python,java if exists('+colorcolumn') | setlocal colorcolumn=81 | endif
+
 
 set directory=~/.vim/swap// " where to save swap files
 set undodir=~/.vim/undo//   " where to save undo histories
