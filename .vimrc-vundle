@@ -1,7 +1,7 @@
 set nocompatible
 
 " remap <leader> to ,
-let mapleader = ',' " remap <leader>
+let mapleader=',' " remap <leader>
 
 "
 " Vundle setting
@@ -69,7 +69,7 @@ nnoremap <F8> :TagbarToggle<CR>
 let g:ycm_add_preview_to_completeopt=1
 let g:ycm_autoclose_preview_window_after_completion=1
 " disable for python, use jedi-vim instead
-let g:ycm_filetype_blacklist = {
+let g:ycm_filetype_blacklist={
       \ 'python' : 1,
       \ 'tagbar' : 1,
       \ 'qf' : 1,
@@ -82,7 +82,7 @@ let g:ycm_filetype_blacklist = {
       \}
 
 " enable completion from tags
-"let g:ycm_collect_identifiers_from_tags_files=1
+let g:ycm_collect_identifiers_from_tags_files=1
 " fallback path to a compilation flags config file
 let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
 
@@ -121,6 +121,12 @@ let g:UltiSnipsEditSplit="vertical"
 
 
 "
+" CtrlP
+"
+let g:ctrlp_max_files=30000
+
+
+"
 " Rope
 "
 "source ~/Source/repos/rope/rope.vim
@@ -140,7 +146,7 @@ let g:syntastic_python_checkers=['pylint', 'flake8']
 " vim-airline
 "
 set laststatus=2 " show statusline all the time
-let g:airline_theme = 'solarized' " make sure solarized is used
+let g:airline_theme="solarized" " make sure solarized is used
 
 
 "
@@ -185,6 +191,7 @@ set hidden " switch files without saving them first
 set clipboard=unnamedplus " use + register for copy-paste
 "set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " highlight problematic whitespace
 set pastetoggle=<F12> " pastetoggle (sane indentation on pastes)
+set switchbuf+=usetab,newtab " switch to existing tab or use new tab
 
 " bash-like tab completion
 set wildmode=longest,list,full
@@ -201,9 +208,9 @@ set nowritebackup
 
 " swap to the last viewed tab
 " http://stackoverflow.com/questions/2119754/switch-to-last-active-tab-in-vim
-let g:lasttab = 1
+let g:lasttab=1
 nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
-au TabLeave * let g:lasttab = tabpagenr()
+au TabLeave * let g:lasttab=tabpagenr()
 
 " change Working Directory to that of the current file
 cmap cd. lcd %:p:h
