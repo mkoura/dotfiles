@@ -1,7 +1,18 @@
+""
+"" Initial config
+""
+
 set nocompatible
 
 " remap <leader> to ,
 let mapleader=',' " remap <leader>
+
+
+
+""
+"" Plugins config
+""
+
 
 "
 " Vundle setting
@@ -87,16 +98,16 @@ let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
 
 " enable omni completion
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-"autocmd FileType python setlocal omnifunc=pythoncomplete#Complete " use jedi-vim instead
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+au FileType css setlocal omnifunc=csscomplete#CompleteCSS
+au FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+au FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+"au FileType python setlocal omnifunc=pythoncomplete#Complete " use jedi-vim instead
+au FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+au FileType ruby setlocal omnifunc=rubycomplete#Complete
 
 " GoTo command
-autocmd FileType c,cpp,javascript nnoremap <buffer> <leader>jd :YcmCompleter GoTo<CR>
-autocmd FileType c,cpp,javascript nnoremap <buffer> <leader>ja :YcmCompleter GoToDefinition<CR>
+au FileType c,cpp,javascript nnoremap <buffer> <leader>jd :YcmCompleter GoTo<CR>
+au FileType c,cpp,javascript nnoremap <buffer> <leader>ja :YcmCompleter GoToDefinition<CR>
 
 
 "
@@ -152,11 +163,17 @@ let g:airline_theme="solarized" " make sure solarized is used
 "
 " supertab
 "
-"autocmd FileType * if &ft != 'python' | let b:SuperTabDisabled = 1 | endif
+"au FileType * if &ft != 'python' | let b:SuperTabDisabled = 1 | endif
 
 
 " load matchit
 runtime macros/matchit.vim
+
+
+
+""
+"" Vim settings
+""
 
 
 "
@@ -164,15 +181,13 @@ runtime macros/matchit.vim
 "
 " highlight extra whitespace
 " MUST be inserted BEFORE the colorscheme command
-autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
-autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+au ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+au InsertLeave * match ExtraWhitespace /\s\+$/
 
 syntax enable
 set t_Co=16
 set background=dark
 colorscheme solarized
-
-autocmd FileType c,cpp,javascript,python,java if exists('+colorcolumn') | setlocal colorcolumn=81 | endif
 
 
 set directory=~/.vim/swap// " where to save swap files
@@ -200,6 +215,17 @@ set wildmenu
 " don't save backup files
 set nobackup
 set nowritebackup
+
+
+"
+" Autocommands
+"
+
+" vertical bar on after 80 character
+au FileType c,cpp,javascript,python,java,sh setlocal colorcolumn=81
+
+" indentation
+au FileType c,cpp,javascript,python,java,sh setlocal expandtab shiftround tabstop=4 shiftwidth=4 softtabstop=4
 
 
 "
