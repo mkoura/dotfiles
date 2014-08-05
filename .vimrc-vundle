@@ -225,7 +225,7 @@ set nowritebackup
 au FileType c,cpp,javascript,python,java,sh setlocal colorcolumn=81
 
 " indentation
-au FileType c,cpp,javascript,python,java,sh setlocal expandtab shiftround tabstop=4 shiftwidth=4 softtabstop=4
+au FileType c,cpp,javascript,python,java,sh,ant,xml setlocal expandtab shiftround tabstop=4 shiftwidth=4 softtabstop=4
 
 
 "
