@@ -10,7 +10,7 @@
 rm -f ~/.cache/.tmpcache
 
 # create cache dir
-cachedir="$(mktemp -d /mnt/tmpfs/${LOGNAME:-$USER}-cache.XXXXXXX)"
+cachedir="$(mktemp -d /tmp/${LOGNAME:-$USER}-cache.XXXXXXX)"
 
 # create link to cache dir in use
 ln -s "$cachedir" ~/.cache/.tmpcache
