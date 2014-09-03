@@ -29,7 +29,7 @@ clipupd() {
     return 1
 }
 
-while : ; do
+while DISPLAY="$secondx" xset q >/dev/null 2>&1 ; do
     sleep 1
     clipupd "$firstx" "$secondx" || clipupd "$secondx" "$firstx"
 done
