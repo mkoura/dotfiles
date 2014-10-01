@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# locale settings
+#export LC_MESSAGES=en_US.UTF-8
+#export LANG=cs_CZ.UTF-8
+
 # set PATH so it includes user's private bin if it exists
 [ -d "${HOME}/bin" ] && PATH="${HOME}/bin:$PATH"
 
