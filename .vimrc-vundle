@@ -33,6 +33,7 @@ Bundle 'gmarik/vundle'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'SirVer/ultisnips'
 Bundle 'Valloric/YouCompleteMe'
+Bundle 'Yggdroot/indentLine'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'benmills/vimux'
 Bundle 'bling/vim-airline'
@@ -151,6 +152,7 @@ let g:ctrlp_max_files=50000
 let g:syntastic_python_flake8_args="--max-line-length=160"
 let g:syntastic_python_checkers=['pylint', 'flake8']
 "let g:syntastic_python_checkers=['flake8']
+let g:syntastic_disabled_filetypes = ['java']
 
 
 "
@@ -186,6 +188,7 @@ au InsertLeave * match ExtraWhitespace /\s\+$/
 
 syntax enable
 set t_Co=16
+"set background=light
 set background=dark
 colorscheme solarized
 
@@ -196,6 +199,7 @@ set undofile " persistent undo
 set undolevels=500  " maximum number of changes that can be undone
 set undoreload=5000 " maximum number lines to save for undo on a buffer reload
 set cursorline " highlight line with cursor
+"set cursorcolumn " highlight column with cursor
 set showcmd " show that vim is waiting for key
 set showmatch " show matching brackets/parenthesis
 set backspace=indent,eol,start " backspace for dummies
@@ -211,10 +215,15 @@ set switchbuf+=usetab,newtab " switch to existing tab or use new tab
 " bash-like tab completion
 set wildmode=longest,list,full
 set wildmenu
+set wildignore=*~,*.bak,*.o,*.aut,*.dvi
 
 " don't save backup files
 set nobackup
 set nowritebackup
+
+" highlight matching bracket
+set showmatch
+set matchpairs=(:),[:],{:},<:>
 
 
 "
