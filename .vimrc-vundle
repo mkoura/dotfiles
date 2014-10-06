@@ -187,7 +187,7 @@ au ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
 au InsertLeave * match ExtraWhitespace /\s\+$/
 
 syntax enable
-set t_Co=16
+set t_Co=256
 "set background=light
 set background=dark
 colorscheme solarized
