@@ -101,7 +101,8 @@ fi
 #alias ll='ls -l'
 #alias la='ls -A'
 #alias l='ls -CF'
-alias tmux='TERM=xterm-256color /usr/bin/tmux'
 alias lsperm='stat -c "%a %n"'
+alias tmux='TERM=xterm-256color /usr/bin/tmux'
+alias tmuxa='tmux attach || tmux'
 
 [ -e "/usr/lib/mc/mc-wrapper.sh" ] && alias mc='. /usr/lib/mc/mc-wrapper.sh'
