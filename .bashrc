@@ -56,9 +56,9 @@ else
 fi
 unset color_prompt
 
-# If this is an xterm set the title to user@host:dir
+# if this is an xterm or screen/tmux set the title to user@host:dir
 case "$TERM" in
-xterm*|rxvt*)
+xterm*|rxvt*|screen*)
     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
     ;;
 esac
