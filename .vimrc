@@ -2,10 +2,14 @@ set nocompatible
 
 " syntax highlighting
 syntax enable
-set t_Co=256
-"set background=light
-set background=dark
-colorscheme solarized
+if &term=~'linux'
+  set background=dark
+else
+  set t_Co=256
+  "set background=light
+  set background=dark
+  colorscheme solarized
+endif
 
 " show that vim is waiting for key
 set showcmd
