@@ -5,7 +5,7 @@ syntax enable
 if &term=~'linux'
   set background=dark
 else
-  set t_Co=256
+  "set t_Co=256
   "set background=light
   set background=dark
   colorscheme solarized
