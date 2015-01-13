@@ -32,6 +32,7 @@ Bundle 'gmarik/vundle'
 "Bundle 'jmcantrell/vim-virtualenv' " use mkoura/vim-virtualenv until PYTHONPATH fixed
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'SirVer/ultisnips'
+" run './install.sh --clang-completer' in the bundle/YouCompleteMe
 Bundle 'Valloric/YouCompleteMe'
 "Bundle 'Yggdroot/indentLine'
 Bundle 'altercation/vim-colors-solarized'
@@ -41,10 +42,17 @@ Bundle 'davidhalter/jedi-vim'
 Bundle 'honza/vim-snippets'
 Bundle 'jlanzarotta/bufexplorer'
 Bundle 'kien/ctrlp.vim'
+" install exuberant-ctags package
 Bundle 'majutsushi/tagbar'
+" run 'npm install' in the bundle/tern_for_vim
+Bundle 'marijnh/tern_for_vim'
+" install silversearcher-ag package
+Bundle 'mileszs/ack.vim'
 Bundle 'mkitt/tabline.vim'
 Bundle 'mkoura/vim-virtualenv'
+Bundle 'moll/vim-node'
 Bundle 'myusuf3/numbers.vim'
+Bundle 'pangloss/vim-javascript'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
@@ -98,17 +106,20 @@ let g:ycm_collect_identifiers_from_tags_files=1
 " fallback path to a compilation flags config file
 let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
 
-" enable omni completion
-au FileType css setlocal omnifunc=csscomplete#CompleteCSS
-au FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-au FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-"au FileType python setlocal omnifunc=pythoncomplete#Complete " use jedi-vim instead
-au FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-au FileType ruby setlocal omnifunc=rubycomplete#Complete
-
 " GoTo command
-au FileType c,cpp,javascript nnoremap <buffer> <leader>jd :YcmCompleter GoTo<CR>
-au FileType c,cpp,javascript nnoremap <buffer> <leader>ja :YcmCompleter GoToDefinition<CR>
+au FileType c,cpp nnoremap <buffer> <leader>jd :YcmCompleter GoTo<CR>
+au FileType c,cpp nnoremap <buffer> <leader>ja :YcmCompleter GoToDefinition<CR>
+
+
+
+"
+" Tern for Vim
+"
+au FileType javascript nnoremap <buffer> <leader>jd :TernDef<CR>
+au FileType javascript nnoremap <buffer> <leader>ja :TernDef<CR>
+au FileType javascript nnoremap <buffer> <leader>re :TernRename<CR>
+au FileType javascript nnoremap <buffer> <leader>us :TernRefs<CR>
+au FileType javascript nmap <buffer> <S-k> :TernDoc<CR>
 
 
 "
@@ -163,9 +174,12 @@ let g:airline_theme="solarized" " make sure solarized is used
 
 
 "
-" supertab
+" ack.vim
 "
-"au FileType * if &ft != 'python' | let b:SuperTabDisabled = 1 | endif
+" use 'ag' instead of 'ack'
+let g:ackprg = 'ag --nogroup --nocolor --column'
+" same as above, but report every match on the line
+"let g:ackprg = 'ag --vimgrep'
 
 
 " load matchit
@@ -239,6 +253,9 @@ au FileType c,cpp,javascript,python,java,sh setlocal colorcolumn=81
 
 " indentation
 au FileType c,cpp,javascript,python,java,sh,ant,xml setlocal expandtab shiftround tabstop=4 shiftwidth=4 softtabstop=4
+
+" restore last position
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 
 "
