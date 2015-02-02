@@ -31,6 +31,7 @@ Bundle 'gmarik/vundle'
 " installed bundles
 "Bundle 'jmcantrell/vim-virtualenv' " use mkoura/vim-virtualenv until PYTHONPATH fixed
 Bundle 'Lokaltog/vim-easymotion'
+"Bundle 'Raimondi/delimitMate'
 Bundle 'SirVer/ultisnips'
 " run './install.sh --clang-completer' in the bundle/YouCompleteMe
 Bundle 'Valloric/YouCompleteMe'
@@ -39,6 +40,8 @@ Bundle 'altercation/vim-colors-solarized'
 Bundle 'benmills/vimux'
 Bundle 'bling/vim-airline'
 Bundle 'davidhalter/jedi-vim'
+" install silversearcher-ag package
+Bundle 'ervandew/ag'
 Bundle 'honza/vim-snippets'
 Bundle 'jlanzarotta/bufexplorer'
 Bundle 'kien/ctrlp.vim'
@@ -46,8 +49,6 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'majutsushi/tagbar'
 " run 'npm install' in the bundle/tern_for_vim
 Bundle 'marijnh/tern_for_vim'
-" install silversearcher-ag package
-Bundle 'mileszs/ack.vim'
 Bundle 'mkitt/tabline.vim'
 Bundle 'mkoura/vim-virtualenv'
 Bundle 'moll/vim-node'
@@ -111,7 +112,6 @@ au FileType c,cpp nnoremap <buffer> <leader>jd :YcmCompleter GoTo<CR>
 au FileType c,cpp nnoremap <buffer> <leader>ja :YcmCompleter GoToDefinition<CR>
 
 
-
 "
 " Tern for Vim
 "
@@ -173,15 +173,6 @@ set laststatus=2 " show statusline all the time
 let g:airline_theme="solarized" " make sure solarized is used
 
 
-"
-" ack.vim
-"
-" use 'ag' instead of 'ack'
-let g:ackprg = 'ag --nogroup --nocolor --column'
-" same as above, but report every match on the line
-"let g:ackprg = 'ag --vimgrep'
-
-
 " load matchit
 runtime macros/matchit.vim
 
@@ -231,7 +222,7 @@ set pastetoggle=<F12> " pastetoggle (sane indentation on pastes)
 set switchbuf+=usetab,newtab " switch to existing tab or use new tab
 
 " bash-like tab completion
-set wildmode=longest,list,full
+set wildmode=longest:full,list,full
 set wildmenu
 set wildignore=*~,*.bak,*.o,*.aut,*.dvi
 
@@ -248,8 +239,8 @@ set matchpairs=(:),[:],{:},<:>
 " Autocommands
 "
 
-" vertical bar on after 80 character
-au FileType c,cpp,javascript,python,java,sh setlocal colorcolumn=81
+" vertical bar on after 100 character
+au FileType c,cpp,javascript,python,java,sh setlocal colorcolumn=101
 
 " indentation
 au FileType c,cpp,javascript,python,java,sh,ant,xml setlocal expandtab shiftround tabstop=4 shiftwidth=4 softtabstop=4

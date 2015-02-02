@@ -22,3 +22,8 @@ fi
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
+
+# local node.js
+if [ -d "$HOME/node_modules/bin" ] ; then
+    PATH="$HOME/node_modules/bin:$PATH"
+fi
