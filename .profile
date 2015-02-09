@@ -18,12 +18,18 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
+# set PATH so it includes user's node_modules/bin if it exists
+# (execute "ln -s .bin ~/node_modules/bin" first)
+if [ -d "$HOME/node_modules/bin" ] ; then
+    PATH="$HOME/node_modules/bin:$PATH"
+fi
+
+# set PATH so it includes user's .local/bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
-fi
-
-# local node.js
-if [ -d "$HOME/node_modules/bin" ] ; then
-    PATH="$HOME/node_modules/bin:$PATH"
 fi

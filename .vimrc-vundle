@@ -1,22 +1,19 @@
-""
-"" Initial config
-""
+" Initial config {{{
+" vim:foldmethod=marker:foldlevel=0
 
 set nocompatible
 
 " remap <leader> to ,
 let mapleader=',' " remap <leader>
 
+" }}}
 
 
-""
-"" Plugins config
-""
+" Plugins {{{
 
 
-"
-" Vundle setting
-"
+" Vundle setting {{{
+
 " git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 "
 filetype off
@@ -31,6 +28,7 @@ Bundle 'gmarik/vundle'
 " installed bundles
 "Bundle 'jmcantrell/vim-virtualenv' " use mkoura/vim-virtualenv until PYTHONPATH fixed
 Bundle 'Lokaltog/vim-easymotion'
+Bundle 'MarcWeber/vim-addon-local-vimrc'
 "Bundle 'Raimondi/delimitMate'
 Bundle 'SirVer/ultisnips'
 " run './install.sh --clang-completer' in the bundle/YouCompleteMe
@@ -39,9 +37,11 @@ Bundle 'Valloric/YouCompleteMe'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'benmills/vimux'
 Bundle 'bling/vim-airline'
+Bundle 'burnettk/vim-angular'
 Bundle 'davidhalter/jedi-vim'
 " install silversearcher-ag package
 Bundle 'ervandew/ag'
+" git clone https://github.com/matthewsimo/angular-vim-snippets.git
 Bundle 'honza/vim-snippets'
 Bundle 'jlanzarotta/bufexplorer'
 Bundle 'kien/ctrlp.vim'
@@ -53,6 +53,7 @@ Bundle 'mkitt/tabline.vim'
 Bundle 'mkoura/vim-virtualenv'
 Bundle 'moll/vim-node'
 Bundle 'myusuf3/numbers.vim'
+Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'pangloss/vim-javascript'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
@@ -63,6 +64,10 @@ Bundle 'vim-scripts/Gundo'
 
 filetype plugin indent on
 
+" }}}
+
+
+" Plugins config {{{
 
 "
 " Nerdtree
@@ -107,20 +112,6 @@ let g:ycm_collect_identifiers_from_tags_files=1
 " fallback path to a compilation flags config file
 let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
 
-" GoTo command
-au FileType c,cpp nnoremap <buffer> <leader>jd :YcmCompleter GoTo<CR>
-au FileType c,cpp nnoremap <buffer> <leader>ja :YcmCompleter GoToDefinition<CR>
-
-
-"
-" Tern for Vim
-"
-au FileType javascript nnoremap <buffer> <leader>jd :TernDef<CR>
-au FileType javascript nnoremap <buffer> <leader>ja :TernDef<CR>
-au FileType javascript nnoremap <buffer> <leader>re :TernRename<CR>
-au FileType javascript nnoremap <buffer> <leader>us :TernRefs<CR>
-au FileType javascript nmap <buffer> <S-k> :TernDoc<CR>
-
 
 "
 " jedi-vim
@@ -147,6 +138,7 @@ let g:UltiSnipsEditSplit="vertical"
 " CtrlP
 "
 let g:ctrlp_max_files=50000
+let g:ctrlp_user_command='ag %s -l --nocolor -g ""'
 
 
 "
@@ -160,9 +152,10 @@ let g:ctrlp_max_files=50000
 "
 " Syntastic
 "
-let g:syntastic_python_flake8_args="--max-line-length=160"
-let g:syntastic_python_checkers=['pylint', 'flake8']
-"let g:syntastic_python_checkers=['flake8']
+let g:syntastic_python_flake8_args="--max-line-length=100"
+"let g:syntastic_python_checkers=['pylint', 'flake8']
+let g:syntastic_python_checkers=['flake8']
+let g:syntastic_python_flake8_exec = 'flake8p'
 let g:syntastic_disabled_filetypes = ['java']
 
 
@@ -176,20 +169,19 @@ let g:airline_theme="solarized" " make sure solarized is used
 " load matchit
 runtime macros/matchit.vim
 
+" }}}
+" }}}
 
 
-""
-"" Vim settings
-""
+" Colors {{{
 
-
-"
-" colors
-"
 " highlight extra whitespace
 " MUST be inserted BEFORE the colorscheme command
-au ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
-au InsertLeave * match ExtraWhitespace /\s\+$/
+augroup colorsgrp
+    autocmd!
+    au ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+    au InsertLeave * match ExtraWhitespace /\s\+$/
+augroup END
 
 syntax enable
 if &term=~'linux'
@@ -201,6 +193,10 @@ else
   colorscheme solarized
 endif
 
+" }}}
+
+
+" Sets {{{
 
 set directory=~/.vim/swap// " where to save swap files
 set undodir=~/.vim/undo//   " where to save undo histories
@@ -210,9 +206,9 @@ set undoreload=5000 " maximum number lines to save for undo on a buffer reload
 set cursorline " highlight line with cursor
 "set cursorcolumn " highlight column with cursor
 set showcmd " show that vim is waiting for key
-set showmatch " show matching brackets/parenthesis
 set backspace=indent,eol,start " backspace for dummies
 set number " line numbers on
+set incsearch " search as characters are entered
 set hlsearch " highlight search terms
 "set mouse=a " set mouse=a
 set hidden " switch files without saving them first
@@ -220,6 +216,7 @@ set clipboard=unnamedplus " use + register for copy-paste
 "set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " highlight problematic whitespace
 set pastetoggle=<F12> " pastetoggle (sane indentation on pastes)
 set switchbuf+=usetab,newtab " switch to existing tab or use new tab
+set lazyredraw " redraw only when we need to
 
 " bash-like tab completion
 set wildmode=longest:full,list,full
@@ -234,30 +231,47 @@ set nowritebackup
 set showmatch
 set matchpairs=(:),[:],{:},<:>
 
-
-"
-" Autocommands
-"
-
-" vertical bar on after 100 character
-au FileType c,cpp,javascript,python,java,sh setlocal colorcolumn=101
-
-" indentation
-au FileType c,cpp,javascript,python,java,sh,ant,xml setlocal expandtab shiftround tabstop=4 shiftwidth=4 softtabstop=4
-
-" restore last position
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+" }}}
 
 
-"
-" Shortcuts
-"
+" Autocommands {{{
+
+augroup configgroup
+    autocmd!
+
+    " YouCompleteMe
+    au FileType c,cpp nnoremap <buffer> <leader>jd :YcmCompleter GoTo<CR>
+    au FileType c,cpp nnoremap <buffer> <leader>ja :YcmCompleter GoToDefinition<CR>
+
+    " Tern for Vim
+    au FileType javascript nnoremap <buffer> <leader>jd :TernDef<CR>
+    au FileType javascript nnoremap <buffer> <leader>ja :TernDef<CR>
+    au FileType javascript nnoremap <buffer> <leader>re :TernRename<CR>
+    au FileType javascript nnoremap <buffer> <leader>us :TernRefs<CR>
+    au FileType javascript nmap <buffer> <S-k> :TernDoc<CR>
+
+    " vertical bar on after 100 character
+    au FileType c,cpp,javascript,python,java,sh setlocal colorcolumn=101
+
+    " indentation
+    au FileType c,cpp,javascript,python,java,sh,ant,xml,vim setlocal expandtab shiftround tabstop=4 shiftwidth=4 softtabstop=4
+
+    " restore last position
+    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+    " see shortcut swap to the last viewed tab
+    au TabLeave * let g:lasttab=tabpagenr()
+augroup END
+
+" }}}
+
+
+" Shortcuts {{{
 
 " swap to the last viewed tab
 " http://stackoverflow.com/questions/2119754/switch-to-last-active-tab-in-vim
 let g:lasttab=1
 nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
-au TabLeave * let g:lasttab=tabpagenr()
 
 " change Working Directory to that of the current file
 cmap cd. lcd %:p:h
@@ -281,6 +295,19 @@ inoremap <M-k> <Esc>:m .-2<CR>==gi
 vnoremap <M-j> :m '>+1<CR>gv=gv
 vnoremap <M-k> :m '<-2<CR>gv=gv
 
+" turn off search highlight
+nnoremap <leader><space> :nohlsearch<CR>
+
+" move vertically by visual line
+nnoremap j gj
+nnoremap k gk
+
+" highlight last inserted text
+nnoremap gV `[v`]
+
+" save session
+nnoremap <leader>s :mksession<CR>
+
 " allow using the repeat operator with a visual selection (!)
 " http://stackoverflow.com/a/8064607/127816
 vnoremap . :normal .<CR>
@@ -292,10 +319,10 @@ cmap w!! w !sudo tee % >/dev/null
 " and ask which one to jump to
 nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
 
+" }}}
 
-"
-" Commands
-"
+
+" Commands {{{
 
 " Rmw = remove trailing whitespaces and ^M chars
 command! -bang Rmw %s/\s\+$//e<bang>
@@ -303,3 +330,5 @@ command! -bang Rmw %s/\s\+$//e<bang>
 " R = command output in new tab
 command! -nargs=* -complete=shellcmd Rr tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | 0r !<args>
 command! -nargs=* -complete=shellcmd R  tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | execute '0r !<args>' | filetype detect
+
+" }}}
