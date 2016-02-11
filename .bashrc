@@ -75,6 +75,9 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+# virtualenv
+export PROJECT_HOME=${HOME}/Sources/virtualenvs
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -98,9 +101,10 @@ elif [ -e $HOME/.mc/solarized.ini ]; then
 fi
 
 # aliases
-#alias ll='ls -l'
-#alias la='ls -A'
-#alias l='ls -CF'
+alias ll='ls -l'
+alias la='ls -A'
+alias lt='ls -1 -t'
+alias l='ls -CF'
 alias lsperm='stat -c "%a %n"'
 alias tmuxx='TERM=xterm-256color /usr/bin/tmux'
 alias tmuxa='tmuxx attach || tmuxx'

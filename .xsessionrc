@@ -1,11 +1,16 @@
 #!/bin/sh
 
-# locale settings
-#export LC_MESSAGES=en_US.UTF-8
-#export LANG=cs_CZ.UTF-8
+# include ~/.env
+[ -e "$HOME/.env" ] && . "$HOME/.env"
 
-# set PATH so it includes user's private bin if it exists
-[ -d "${HOME}/bin" ] && PATH="${HOME}/bin:$PATH"
+# Qt5 and Mate
+export QT_STYLE_OVERRIDE=gtk
+
+# for non-gtk apps
+#export DESKTOP_SESSION=gnome
+
+# enable HW accel on Firefox
+export MOZ_USE_OMTC=1
 
 # create ~/.cache
 tmpcache.sh
@@ -20,16 +25,22 @@ xset b off
 #autocutsel -fork
 #autocutsel -selection PRIMARY -buttonup -fork
 
-# urxvt daemon mode
-#urxvtd -q -o -f
+
+# move cursor to top left corner...
+#xdotool mousemove 30 30
+# ... and mount user volumes
+#usermounts.sh
 
 # keyboard layout
 #setxkbmap -layout "us,cz" -variant ",qwerty" -option grp:switch,grp:caps_toggle,grp_led:caps
 
 # set trackpoint scrolling
-xinput set-prop "DualPoint Stick" "Evdev Wheel Emulation" 1
-xinput set-prop "DualPoint Stick" "Evdev Wheel Emulation Button" 2
-xinput set-prop "DualPoint Stick" "Evdev Wheel Emulation Timeout" 200
-xinput set-prop "DualPoint Stick" "Evdev Wheel Emulation Axes" 6 7 4 5
+xinput set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation" 1
+xinput set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Button" 2
+xinput set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Timeout" 200
+xinput set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Axes" 6 7 4 5
+
+# KDE - remap mic mute key to work in KDE
+#xmodmap -e "keycode 198 = XF86Away"
 
 #conky -c ~/.conky/conky_red/conkyrc_red

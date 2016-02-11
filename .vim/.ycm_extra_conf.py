@@ -34,7 +34,7 @@ import ycm_core
 # These are the compilation flags that will be used in case there's no
 # compilation database set (by default, one is not set).
 # CHANGE THIS LIST OF FLAGS. YES, THIS IS THE DROID YOU HAVE BEEN LOOKING FOR.
-flags = [
+base_c_flags = [
 '-Wall',
 '-Wextra',
 '-Werror',
@@ -50,7 +50,7 @@ flags = [
 # For a C project, you would set this to something like 'c99' instead of
 # 'c++11'.
 #'-std=c++11',
-'-std=c99',
+'-std=gnu11',
 # ...and the same thing goes for the magic -x option which specifies the
 # language that the files to be compiled are written in. This is mostly
 # relevant for c++ headers.
@@ -59,6 +59,8 @@ flags = [
 #'c++',
 'c',
 ]
+
+flags = base_c_flags
 
 
 # Set this to the absolute path to the folder (NOT the file!) containing the
