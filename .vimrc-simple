@@ -1,0 +1,151 @@
+" Initial config {{{
+" vim:foldmethod=marker:foldlevel=0
+
+" character encoding used inside Vim
+"scriptencoding utf-8
+"set encoding=utf-8
+
+set nocompatible
+
+" remap <leader> to ,
+let mapleader=',' " remap <leader>
+
+" }}}
+
+
+" Colors {{{
+
+" highlight extra whitespace
+" MUST be inserted BEFORE the colorscheme command
+augroup colorsgrp
+  autocmd!
+  au ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+  au InsertLeave * match ExtraWhitespace /\s\+$/
+augroup END
+
+syntax enable
+if &term=~'linux'
+  set background=dark
+else
+  "set t_Co=256
+  set background=light
+  "set background=dark
+  colorscheme solarized
+endif
+
+" }}}
+
+
+" Sets {{{
+
+" show that vim is waiting for key
+set history=1000 " mum of entries remembered for ':' commands and search patterns
+set cursorline " highlight line with cursor
+"set cursorcolumn " highlight column with cursor
+set showcmd " show that vim is waiting for key
+set scrolloff=3 " min number of lines to keep above and below the cursor
+set backspace=indent,eol,start " backspace for dummies
+set number " line numbers on
+set incsearch " search as characters are entered
+set hlsearch " highlight search terms
+"set mouse=a " set mouse=a
+"set hidden " switch files without saving them first
+set clipboard=unnamedplus " use + register for copy-paste
+"set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " highlight problematic whitespace
+set pastetoggle=<leader>pt " pastetoggle (sane indentation on pastes)
+set switchbuf+=usetab,newtab " switch to existing tab or use new tab
+set lazyredraw " redraw only when we need to
+set completeopt-=preview " turn off the preview window
+
+" bash-like tab completion
+"set wildmode=longest:full,list,full
+set wildmode=list:longest,full
+set wildmenu
+set wildignore=*~,*.bak,*.o,*.aut,*.dvi
+
+" highlight matching bracket
+set showmatch
+set matchpairs=(:),[:],{:},<:>
+
+" }}}
+
+
+" Key mappings {{{
+
+" fix Alt key in console
+" for mapped keys
+if ! has("gui_running")
+  set <M-h>=h
+  set <M-j>=j
+  set <M-k>=k
+  set <M-l>=l
+  set <M-t>=t
+endif
+
+" swap to the last viewed tab
+" http://stackoverflow.com/questions/2119754/switch-to-last-active-tab-in-vim
+let g:lasttab=1
+nmap <M-t><M-t> :exe "tabn ".g:lasttab<CR>
+
+" move tab to right
+nmap <M-t><M-l> :tabm +1<CR>
+" move tab to left
+nmap <M-t><M-h> :tabm -1<CR>
+
+" moving lines up and down
+nnoremap <M-j> :m .+1<CR>==
+nnoremap <M-k> :m .-2<CR>==
+inoremap <M-j> <Esc>:m .+1<CR>==gi
+inoremap <M-k> <Esc>:m .-2<CR>==gi
+vnoremap <M-j> :m '>+1<CR>gv=gv
+vnoremap <M-k> :m '<-2<CR>gv=gv
+
+" visual shifting (does not exit Visual mode)
+vnoremap < <gv
+vnoremap > >gv
+
+" turn off search highlight
+nnoremap <leader><space> :nohlsearch<CR>
+
+" move vertically by visual line
+nnoremap j gj
+nnoremap k gk
+
+" highlight last inserted text
+nnoremap gV `[v`]
+
+" save session
+nnoremap <leader>ss :mksession<CR>
+
+" allow using the repeat operator with a visual selection (!)
+" http://stackoverflow.com/a/8064607/127816
+vnoremap . :normal .<CR>
+
+" map <Leader>ff to display all lines with keyword under cursor
+" and ask which one to jump to
+nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
+
+" for when you forget to sudo.. Really Write the file.
+cmap w!! w !sudo tee % >/dev/null
+
+" change Working Directory to that of the current file
+cmap cd. lcd %:p:h
+
+" }}}
+
+
+" Commands {{{
+
+" Rmw = remove trailing whitespaces and ^M chars
+command! Rmw %s/\s\+$//e
+
+" background settings
+command! Bglight :set background=light
+command! Bgdark :set background=dark
+
+
+" R = command output in new tab
+command! -nargs=* -complete=shellcmd Rr tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | 0r !<args>
+command! -nargs=* -complete=shellcmd R  tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | execute '0r !<args>' | filetype detect
+
+" }}}

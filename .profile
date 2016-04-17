@@ -20,5 +20,5 @@ fi
 
 # include .env if it exists
 if [ -e "$HOME/.env" ]; then
-  . "$HOME/.env" --login
+  . "$HOME/.env"
 fi

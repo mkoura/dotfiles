@@ -8,6 +8,7 @@ export QT_STYLE_OVERRIDE=gtk
 
 # for non-gtk apps
 #export DESKTOP_SESSION=gnome
+export GNOME_DESKTOP_SESSION_ID=this-is-deprecated
 
 # enable HW accel on Firefox
 export MOZ_USE_OMTC=1
@@ -21,26 +22,10 @@ tmpcache.sh
 # switch off annoying bell
 xset b off
 
-# sync clipboard and selection buffer
-#autocutsel -fork
-#autocutsel -selection PRIMARY -buttonup -fork
-
-
 # move cursor to top left corner...
 #xdotool mousemove 30 30
 # ... and mount user volumes
 #usermounts.sh
 
-# keyboard layout
-#setxkbmap -layout "us,cz" -variant ",qwerty" -option grp:switch,grp:caps_toggle,grp_led:caps
-
-# set trackpoint scrolling
-xinput set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation" 1
-xinput set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Button" 2
-xinput set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Timeout" 200
-xinput set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Axes" 6 7 4 5
-
 # KDE - remap mic mute key to work in KDE
 #xmodmap -e "keycode 198 = XF86Away"
-
-#conky -c ~/.conky/conky_red/conkyrc_red
