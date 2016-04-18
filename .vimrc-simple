@@ -63,6 +63,10 @@ set wildmode=list:longest,full
 set wildmenu
 set wildignore=*~,*.bak,*.o,*.aut,*.dvi
 
+" don't save backup files
+set nobackup
+set nowritebackup
+
 " highlight matching bracket
 set showmatch
 set matchpairs=(:),[:],{:},<:>
