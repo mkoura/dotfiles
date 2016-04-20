@@ -3,16 +3,6 @@
 # include ~/.env
 [ -e "$HOME/.env" ] && . "$HOME/.env"
 
-# Qt5 and Mate
-export QT_STYLE_OVERRIDE=gtk
-
-# for non-gtk apps
-#export DESKTOP_SESSION=gnome
-export GNOME_DESKTOP_SESSION_ID=this-is-deprecated
-
-# enable HW accel on Firefox
-export MOZ_USE_OMTC=1
-
 # create ~/.cache
 tmpcache.sh
 

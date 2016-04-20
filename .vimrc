@@ -19,12 +19,12 @@ let mapleader=',' " remap <leader>
 "
 filetype off
 
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " let Vundle manage Vundle
 " required!
-Plugin 'gmarik/vundle'
+Plugin 'VundleVim/Vundle.vim'
 
 " installed bundles
 Plugin 'KabbAmine/zeavim.vim'
@@ -35,7 +35,6 @@ Plugin 'SirVer/ultisnips'
 " and 'npm install typescript' for TypeScript support
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'benmills/vimux'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 " Python handled by YCM

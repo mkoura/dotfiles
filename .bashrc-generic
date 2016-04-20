@@ -82,15 +82,8 @@ if ! shopt -oq posix; then
 fi
 
 # editor = vim
-export EDITROR=vim
+export EDITOR=vim
 export VISUAL=vim
-
-# solarized skin for mc
-if [ -e $HOME/.config/mc/solarized.ini ]; then
-  export MC_SKIN=$HOME/.config/mc/solarized.ini
-elif [ -e $HOME/.mc/solarized.ini ]; then
-  export MC_SKIN=$HOME/.mc/solarized.ini
-fi
 
 # aliases
 alias ll='ls -l'
@@ -100,8 +93,6 @@ alias l='ls -CF'
 alias lsperm='stat -c "%a %n"'
 alias tmuxx='TERM=xterm-256color /usr/bin/tmux'
 alias tmuxa='tmuxx attach || tmuxx'
-
-[ -e "/usr/lib/mc/mc-wrapper.sh" ] && alias mc='. /usr/lib/mc/mc-wrapper.sh'
 
 # colored man pages: http://linuxtidbits.wordpress.com/2009/03/23/less-colors-for-man-pages/
 # less colors for man pages
