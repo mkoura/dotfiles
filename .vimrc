@@ -172,9 +172,8 @@ let g:ctrlp_user_command='ag %s -l --nocolor -g ""'
 " Syntastic
 "
 let g:syntastic_python_flake8_args='--max-line-length=100'
-"let g:syntastic_python_checkers=['pylint', 'flake8']
-let g:syntastic_python_checkers=['flake8']
-let g:syntastic_python_flake8_exec = 'flake8p'
+let g:syntastic_python_checkers=['pylint', 'flake8']
+"let g:syntastic_python_flake8_exec = 'flake8'
 let g:syntastic_disabled_filetypes = ['java']
 
 

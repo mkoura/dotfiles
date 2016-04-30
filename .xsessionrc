@@ -3,9 +3,6 @@
 # include ~/.env
 [ -e "$HOME/.env" ] && . "$HOME/.env"
 
-# create ~/.cache
-tmpcache.sh
-
 # fix Java (GUI appears gray only)
 #wmname LG3D
 
