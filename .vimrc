@@ -45,7 +45,7 @@ Plugin 'ervandew/ag'
 " in bundles root
 Plugin 'honza/vim-snippets'
 Plugin 'jlanzarotta/bufexplorer'
-Plugin 'jmcantrell/vim-virtualenv'
+"Plugin 'jmcantrell/vim-virtualenv'
 Plugin 'kien/ctrlp.vim'
 Plugin 'leafgarland/typescript-vim'
 Plugin 'luochen1990/rainbow'
@@ -98,6 +98,19 @@ nnoremap <F8> :TagbarToggle<CR>
 
 
 "
+" Python with virtualenv support
+"
+py << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+  project_base_dir = os.environ['VIRTUAL_ENV']
+  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+  execfile(activate_this, dict(__file__=activate_this))
+EOF
+
+
+"
 " YouCompleteMe
 "
 " disable for selected formats
@@ -113,7 +126,7 @@ let g:ycm_filetype_blacklist={
   \}
 
 " tell ycmd to use Python2 even in Python3 venvs
-let g:ycm_server_python_interpreter='/usr/bin/python'
+"let g:ycm_server_python_interpreter='/usr/bin/python2'
 
 " enable completion from tags
 "let g:ycm_collect_identifiers_from_tags_files=1

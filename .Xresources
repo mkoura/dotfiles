@@ -33,40 +33,4 @@
 *color7: #eee8d5
 *color15: #fdf6e3
 
-
-!! urxvt settings
-
-! Solarized
-URxvt*background: #002b36
-URxvt*foreground: #657b83
-URxvt*fading: 40
-URxvt*fadeColor: #002b36
-URxvt*cursorColor: #93a1a1
-URxvt*pointerColorBackground: #586e75
-URxvt*pointerColorForeground: #93a1a1
-! http://blog.yjl.im/2011/07/tmux-15-man-less-and-italic-text.html
-URxvt*colorIT: #ff0000
-URxvt*intensityStyles: false
-
-! font settings
-URxvt*font         : -*-terminus-medium-r-normal-*-14-*-*-*-*-*-*-*
-URxvt*boldFont     : -*-terminus-bold-r-normal-*-14-*-*-*-*-*-*-*
-
-! alt key fix when UTF8 used
-URxvt*meta8        : false
-
-URxvt*scrollBar    : false
-URxvt*pointerBlank : true
-URxvt*geometry     : 145x45
-
-! extensions
-URxvt.perl-ext-common : default,tabbed,selection-to-clipboard
-
-! tabbed color setings
-URxvt.tabbed.tabbar-fg: 2
-URxvt.tabbed.tabbar-bg: 0
-URxvt.tabbed.tab-fg: 1
-URxvt.tabbed.tab-bg: 0
-
-
 ! vim: et sw=2 syn=xdefaults
