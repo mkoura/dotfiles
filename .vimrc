@@ -40,14 +40,13 @@ Plugin 'vim-airline/vim-airline-themes'
 " Python handled by YCM
 "Plugin 'davidhalter/jedi-vim'
 " Install: apt-get install silversearcher-ag (dnf install the_silver_searcher)
-Plugin 'ervandew/ag'
+Plugin 'rking/ag.vim'
 " Install: 'git clone https://github.com/matthewsimo/angular-vim-snippets.git'
 " in bundles root
 Plugin 'honza/vim-snippets'
 Plugin 'jlanzarotta/bufexplorer'
 "Plugin 'jmcantrell/vim-virtualenv'
 Plugin 'kien/ctrlp.vim'
-Plugin 'leafgarland/typescript-vim'
 Plugin 'luochen1990/rainbow'
 " Install: apt-get install exuberant-ctags (dnf install ctags)
 Plugin 'majutsushi/tagbar'
@@ -67,7 +66,7 @@ Plugin 'tomtom/tcomment_vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
 Plugin 'vim-scripts/Gundo'
-Plugin 'vim-scripts/vcscommand.vim'
+"Plugin 'vim-scripts/vcscommand.vim'
 
 call vundle#end()
 filetype plugin indent on
@@ -171,6 +170,7 @@ let g:UltiSnipsEditSplit='vertical'
 "
 let g:ctrlp_max_files=50000
 let g:ctrlp_user_command='ag %s -l --nocolor -g ""'
+let g:ctrlp_switch_buffer='Et'
 
 
 "
@@ -290,10 +290,10 @@ augroup configgroup
   autocmd!
 
   " YouCompleteMe
-  au FileType c,cpp,python,typescript,javascript nnoremap <buffer> <C-]> :YcmCompleter GoTo<CR>
-  au FileType c,cpp,python,typescript,javascript nnoremap <buffer> <leader>ja :YcmCompleter GoToDefinition<CR>
-  au FileType c,cpp,python,typescript,javascript nnoremap <buffer> <leader>gd :YcmCompleter GetDoc<CR>
-  au FileType c,cpp,typescript,javascript nnoremap <buffer> <leader>gt :YcmCompleter GetType<CR>
+  au FileType c,cpp,python,javascript nnoremap <buffer> <C-]> :YcmCompleter GoTo<CR>
+  au FileType c,cpp,python,javascript nnoremap <buffer> <leader>ja :YcmCompleter GoToDefinition<CR>
+  au FileType c,cpp,python,javascript nnoremap <buffer> <leader>gd :YcmCompleter GetDoc<CR>
+  au FileType c,cpp,javascript nnoremap <buffer> <leader>gt :YcmCompleter GetType<CR>
   au FileType javascript nnoremap <buffer> <leader>re :YcmCompleter RefactorRename<CR>
   au FileType c,cpp nnoremap <buffer> <leader>fx :YcmCompleter FixIt<CR>
 
@@ -305,21 +305,16 @@ augroup configgroup
   "au FileType javascript nnoremap <buffer> <leader>tt :TernType<CR>
   "au FileType javascript nmap <buffer> <S-k> :TernDoc<CR>
 
-  " Tsuquyomi (Typescript)
-  "au FileType typescript nnoremap <buffer> <leader>re :TsuquyomiRenameSymbol<CR>
-  "au FileType typescript nnoremap <buffer> <leader>tt : <C-u>echo tsuquyomi#hint()<CR>
-  "au FileType typescript nmap <buffer> <S-k> : <C-u>echo tsuquyomi#hint()<CR>
-
   " Rainbow Parentheses Improved - workaround to make it work with
   " pangloss/vim-javascript
   au FileType javascript syntax clear jsFuncBlock
 
   " vertical bar after 80th character
-  au FileType c,cpp,go,python,sh,javascript,java,typescript setlocal colorcolumn=81
+  au FileType c,cpp,go,python,sh,javascript,java setlocal colorcolumn=101
 
   " indentation
   au FileType c,cpp,go,ant,xml,html,python,tex setlocal expandtab shiftround tabstop=4 shiftwidth=4 softtabstop=4
-  au FileType sh,javascript,java,typescript,vim setlocal expandtab shiftround tabstop=2 shiftwidth=2 softtabstop=2
+  au FileType sh,javascript,java,vim setlocal expandtab shiftround tabstop=2 shiftwidth=2 softtabstop=2
 
   " restore last position in file when reopened
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif

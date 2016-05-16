@@ -33,4 +33,8 @@
 *color7: #eee8d5
 *color15: #fdf6e3
 
+
+!! Fonts
+Xft.lcdfilter: lcddefault
+
 ! vim: et sw=2 syn=xdefaults
