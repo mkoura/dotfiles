@@ -1,0 +1,70 @@
+# ~/.bashrc: executed by bash(1) for non-login shells.
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+# path to history file
+HISTFILE=~/.bash_history
+
+# don't put duplicate lines or lines starting with space in the history.
+# erase duplicates.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth:erasedups
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# show git info
+GITPROMPT=/usr/share/git-core/contrib/completion/git-prompt.sh
+if [ -e "$GITPROMPT" ]; then
+  export GIT_PS1_SHOWDIRTYSTATE=1
+  . "$GITPROMPT"
+  GITPS='\033[1;34m$(__git_ps1 " (%s)")'
+else
+  GITPS=""
+fi
+unset GITPROMPT
+
+# color prompt
+PS1="\033[1;34m\u\033[0m@\033[0;32m\h\033[0m:\033[0;33m\w$GITPS\033[0m\n\$ "
+unset GITPS
+# root shell
+#PS1='\033[1;31m\u\033[0m@\033[0;32m\h\033[0m:\033[0;33m\w\033[0m\n\$ '
+# simple prompt
+#PS1='\u@\h:\w\$ '
+
+# if this is an xterm or screen/tmux set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*|screen*)
+    PS1="\[\e]0;\u@\h: \w\a\]$PS1"
+    ;;
+esac
+
+# editor = vim
+export EDITOR=vim
+export VISUAL=vim
+
+# aliases
+alias la='ls -A'
+alias lt='ls -1 -t'
+alias l='ls -CF'
+alias lsperm='stat -c "%a %n"'
+alias tmuxx='TERM=xterm-256color /usr/bin/tmux'
+alias tmuxa='tmuxx attach || tmuxx'
+
+# colored man pages: http://linuxtidbits.wordpress.com/2009/03/23/less-colors-for-man-pages/
+# less colors for man pages
+export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
+export LESS_TERMCAP_md=$'\E[01;38;5;74m'  # begin bold
+export LESS_TERMCAP_me=$'\E[0m'           # end mode
+export LESS_TERMCAP_se=$'\E[0m'           # end standout-mode
+export LESS_TERMCAP_so=$'\E[33;5;016m\E[40;5;220m'    # begin standout-mode - info box
+export LESS_TERMCAP_ue=$'\E[0m'           # end underline
+export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
