@@ -34,7 +34,6 @@ else
   # root shell
   PS1="\033[1;31m\u\033[0m@\033[0;32m\h\033[0m:\033[0;33m\w\033[0m\n# "
 fi
-unset GITPS
 # simple prompt
 #PS1='\u@\h:\w\$ '
 
