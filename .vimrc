@@ -30,9 +30,9 @@ Plugin 'KabbAmine/zeavim.vim'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'MarcWeber/vim-addon-local-vimrc'
 Plugin 'SirVer/ultisnips'
-" Install: './install.sh --clang-completer --gocode-completer --tern-completer' in ./
-" and 'npm install typescript' for TypeScript support
+" Install: './install.sh --tern-completer' in ./
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'fatih/vim-go'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -67,6 +67,22 @@ filetype plugin indent on
 
 " Plugins config {{{
 
+
+"
+" Python with virtualenv support
+"
+if ! has("gui_running")
+py << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+  project_base_dir = os.environ['VIRTUAL_ENV']
+  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+  execfile(activate_this, dict(__file__=activate_this))
+EOF
+endif
+
+
 "
 " Nerdtree
 "
@@ -87,33 +103,8 @@ nnoremap <F8> :TagbarToggle<CR>
 
 
 "
-" Python with virtualenv support
-"
-py << EOF
-import os
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-  project_base_dir = os.environ['VIRTUAL_ENV']
-  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-  execfile(activate_this, dict(__file__=activate_this))
-EOF
-
-
-"
 " YouCompleteMe
 "
-" disable for selected formats
-let g:ycm_filetype_blacklist={
-  \ 'tagbar' : 1,
-  \ 'qf' : 1,
-  \ 'notes' : 1,
-  \ 'markdown' : 1,
-  \ 'unite' : 1,
-  \ 'text' : 1,
-  \ 'vimwiki' : 1,
-  \ 'pandoc' : 1
-  \}
-
 " tell ycmd to use Python2 even in Python3 venvs
 "let g:ycm_server_python_interpreter='/usr/bin/python2'
 
@@ -148,7 +139,28 @@ let g:ctrlp_switch_buffer='Et'
 "
 let g:syntastic_python_flake8_args='--max-line-length=100'
 let g:syntastic_python_checkers=['pylint', 'flake8']
-let g:syntastic_disabled_filetypes = ['java']
+let g:syntastic_go_checkers=['gofmt', 'govet']
+let g:syntastic_mode_map={ 'mode': 'active', 'passive_filetypes': ['java'] }
+
+
+"
+" vim-go
+"
+" Issue with vim-go and syntastic is that the location list window that
+" contains the output of commands such as :GoBuild and :GoTest might not
+" appear. To resolve this:
+let g:go_list_type="quickfix"
+
+" additional highlighting
+let g:go_highlight_functions=1
+let g:go_highlight_methods=1
+let g:go_highlight_structs=1
+let g:go_highlight_interfaces=1
+let g:go_highlight_operators=1
+let g:go_highlight_build_constraints=1
+
+" don't :GoFmt automatically on save, let Syntastic take care of it
+let g:go_fmt_autosave=0
 
 
 "
@@ -162,15 +174,17 @@ let g:airline_powerline_fonts=0 " 'apt-get install fonts-powerline' first
 "
 " Rainbow Parentheses Improved
 "
-let g:rainbow_active = 1
+let g:rainbow_active=1
 " solarized compatible colors
-let g:rainbow_conf = {
+let g:rainbow_conf={
   \   'ctermfgs': ['brown', 'Darkblue', 'darkgray', 'darkgreen'],
   \   'guifgs': ['RoyalBlue3', 'SeaGreen3', 'DarkOrchid3', 'firebrick3'],
   \}
 
 
-" load matchit
+"
+" matchit
+"
 runtime macros/matchit.vim
 
 " }}}
@@ -191,8 +205,8 @@ if &term=~'linux'
   set background=dark
 else
   "set t_Co=256
-  set background=light
-  "set background=dark
+  "set background=light
+  set background=dark
   colorscheme solarized
 endif
 
@@ -242,7 +256,24 @@ set ssop-=folds   " do not store folds
 " }}}
 
 
-" Autocommands {{{
+" Commands {{{
+
+" Rmw = remove trailing whitespaces and ^M chars
+command! Rmw %s/\s\+$//e
+
+" background settings
+command! Bglight :set background=light
+command! Bgdark :set background=dark
+
+
+" R = command output in new tab
+command! -nargs=* -complete=shellcmd Rr tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | 0r !<args>
+command! -nargs=* -complete=shellcmd R  tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | execute '0r !<args>' | filetype detect
+
+" }}}
+
+
+ " Autocommands {{{
 
 augroup configgroup
   autocmd!
@@ -254,6 +285,10 @@ augroup configgroup
   au FileType c,cpp,javascript nnoremap <buffer> <leader>gt :YcmCompleter GetType<CR>
   au FileType javascript nnoremap <buffer> <leader>re :YcmCompleter RefactorRename<CR>
   au FileType c,cpp nnoremap <buffer> <leader>fx :YcmCompleter FixIt<CR>
+
+  " vim-go
+  au FileType go nmap <buffer> <C-]> <Plug>(go-def-tab)
+  au FileType go nmap <buffer> <leader>re <Plug>(go-rename)
 
   " Rainbow Parentheses Improved - workaround to make it work with
   " pangloss/vim-javascript
@@ -320,15 +355,11 @@ nnoremap k gk
 " highlight last inserted text
 nnoremap gV `[v`]
 
-" save session
-nnoremap <leader>ss :mksession<CR>
-
 " allow using the repeat operator with a visual selection (!)
 " http://stackoverflow.com/a/8064607/127816
 vnoremap . :normal .<CR>
 
-" map <Leader>ff to display all lines with keyword under cursor
-" and ask which one to jump to
+" display all lines with keyword under cursor and ask which one to jump to
 nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
 
 " for when you forget to sudo.. Really Write the file.
@@ -336,22 +367,5 @@ cmap w!! w !sudo tee % >/dev/null
 
 " change Working Directory to that of the current file
 cmap cd. lcd %:p:h
-
-" }}}
-
-
-" Commands {{{
-
-" Rmw = remove trailing whitespaces and ^M chars
-command! Rmw %s/\s\+$//e
-
-" background settings
-command! Bglight :set background=light
-command! Bgdark :set background=dark
-
-
-" R = command output in new tab
-command! -nargs=* -complete=shellcmd Rr tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | 0r !<args>
-command! -nargs=* -complete=shellcmd R  tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | execute '0r !<args>' | filetype detect
 
 " }}}
