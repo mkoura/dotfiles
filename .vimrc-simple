@@ -28,8 +28,8 @@ if &term=~'linux'
   set background=dark
 else
   "set t_Co=256
-  set background=light
-  "set background=dark
+  "set background=light
+  set background=dark
   colorscheme solarized
 endif
 
@@ -38,10 +38,8 @@ endif
 
 " Sets {{{
 
-" show that vim is waiting for key
 set history=1000 " mum of entries remembered for ':' commands and search patterns
 set cursorline " highlight line with cursor
-"set cursorcolumn " highlight column with cursor
 set showcmd " show that vim is waiting for key
 set scrolloff=3 " min number of lines to keep above and below the cursor
 set backspace=indent,eol,start " backspace for dummies
@@ -51,14 +49,12 @@ set hlsearch " highlight search terms
 "set mouse=a " set mouse=a
 "set hidden " switch files without saving them first
 set clipboard=unnamedplus " use + register for copy-paste
-"set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " highlight problematic whitespace
 set pastetoggle=<leader>pt " pastetoggle (sane indentation on pastes)
 set switchbuf+=usetab,newtab " switch to existing tab or use new tab
 set lazyredraw " redraw only when we need to
 set completeopt-=preview " turn off the preview window
 
 " bash-like tab completion
-"set wildmode=longest:full,list,full
 set wildmode=list:longest,full
 set wildmenu
 set wildignore=*~,*.bak,*.o,*.aut,*.dvi
@@ -70,6 +66,23 @@ set nowritebackup
 " highlight matching bracket
 set showmatch
 set matchpairs=(:),[:],{:},<:>
+
+" }}}
+
+
+" Commands {{{
+
+" Rmw = remove trailing whitespaces and ^M chars
+command! Rmw %s/\s\+$//e
+
+" background settings
+command! Bglight :set background=light
+command! Bgdark :set background=dark
+
+
+" R = command output in new tab
+command! -nargs=* -complete=shellcmd Rr tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | 0r !<args>
+command! -nargs=* -complete=shellcmd R  tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | execute '0r !<args>' | filetype detect
 
 " }}}
 
@@ -118,15 +131,11 @@ nnoremap k gk
 " highlight last inserted text
 nnoremap gV `[v`]
 
-" save session
-nnoremap <leader>ss :mksession<CR>
-
 " allow using the repeat operator with a visual selection (!)
 " http://stackoverflow.com/a/8064607/127816
 vnoremap . :normal .<CR>
 
-" map <Leader>ff to display all lines with keyword under cursor
-" and ask which one to jump to
+" display all lines with keyword under cursor and ask which one to jump to
 nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
 
 " for when you forget to sudo.. Really Write the file.
@@ -134,22 +143,5 @@ cmap w!! w !sudo tee % >/dev/null
 
 " change Working Directory to that of the current file
 cmap cd. lcd %:p:h
-
-" }}}
-
-
-" Commands {{{
-
-" Rmw = remove trailing whitespaces and ^M chars
-command! Rmw %s/\s\+$//e
-
-" background settings
-command! Bglight :set background=light
-command! Bgdark :set background=dark
-
-
-" R = command output in new tab
-command! -nargs=* -complete=shellcmd Rr tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | 0r !<args>
-command! -nargs=* -complete=shellcmd R  tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | execute '0r !<args>' | filetype detect
 
 " }}}
