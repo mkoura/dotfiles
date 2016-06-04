@@ -33,10 +33,13 @@ fi
 unset GITPROMPT
 
 # color prompt
-PS1="\033[1;34m\u\033[0m@\033[0;32m\h\033[0m:\033[0;33m\w$GITPS\033[0m\n\$ "
+if [ "$UID" != 0 ]; then
+  PS1="\033[1;34m\u\033[0m@\033[0;32m\h\033[0m:\033[0;33m\w$GITPS\033[0m\n\$ "
+else
+  # root shell
+  PS1="\033[1;31m\u\033[0m@\033[0;32m\h\033[0m:\033[0;33m\w$GITPS\033[0m\n# "
+fi
 unset GITPS
-# root shell
-#PS1='\033[1;31m\u\033[0m@\033[0;32m\h\033[0m:\033[0;33m\w\033[0m\n\$ '
 # simple prompt
 #PS1='\u@\h:\w\$ '
 
@@ -57,10 +60,6 @@ export LESS_TERMCAP_so=$'\E[33;5;016m\E[40;5;220m'    # begin standout-mode - in
 export LESS_TERMCAP_ue=$'\E[0m'           # end underline
 export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
 
-# editor = vim
-export EDITOR=vim
-export VISUAL=vim
-
 # aliases
 alias la='ls -A'
 alias lt='ls -1 -t'
@@ -68,3 +67,10 @@ alias l='ls -CF'
 alias lsperm='stat -c "%a %n"'
 alias tmuxx='TERM=xterm-256color /usr/bin/tmux'
 alias tmuxa='tmuxx attach || tmuxx'
+
+# editor settings
+if hash vimx 2>/dev/null; then
+  alias vim=vimx
+  export EDITOR=vimx
+  export VISUAL=vimx
+fi
