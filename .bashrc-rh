@@ -70,7 +70,11 @@ alias tmuxa='tmuxx attach || tmuxx'
 
 # editor settings
 if hash vimx 2>/dev/null; then
-  alias vim=vimx
   export EDITOR=vimx
-  export VISUAL=vimx
+elif hash vim 2>/dev/null; then
+  export EDITOR=vim
+else
+  export EDITOR=vi
 fi
+alias vim="$EDITOR"
+export VISUAL="$EDITOR"
