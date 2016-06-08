@@ -42,7 +42,7 @@ Plugin 'rking/ag.vim'
 " in bundles root
 Plugin 'honza/vim-snippets'
 Plugin 'jlanzarotta/bufexplorer'
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'luochen1990/rainbow'
 " Install: apt-get install exuberant-ctags (dnf install ctags)
 Plugin 'majutsushi/tagbar'
