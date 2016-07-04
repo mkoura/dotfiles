@@ -10,6 +10,11 @@ set nocompatible
 " remap <leader> to ,
 let mapleader=',' " remap <leader>
 
+"
+" matchit
+"
+runtime macros/matchit.vim
+
 " }}}
 
 
@@ -42,6 +47,7 @@ set history=1000 " mum of entries remembered for ':' commands and search pattern
 set cursorline " highlight line with cursor
 set showcmd " show that vim is waiting for key
 set scrolloff=3 " min number of lines to keep above and below the cursor
+set sidescrolloff=5 " min number of columns to keep to sides
 set backspace=indent,eol,start " backspace for dummies
 set number " line numbers on
 set incsearch " search as characters are entered
@@ -53,6 +59,28 @@ set pastetoggle=<leader>pt " pastetoggle (sane indentation on pastes)
 set switchbuf+=usetab,newtab " switch to existing tab or use new tab
 set lazyredraw " redraw only when we need to
 set completeopt-=preview " turn off the preview window
+set autoindent " copy indent from current line when starting a new line
+set smarttab " insert configured number of blanks on <Tab>
+set ruler " show the line and column number of the cursor position
+set autoread " automatically read again changed files
+set ttimeout " time out on key codes
+set ttimeoutlen=100
+set tabpagemax=50 " maximum number of tab pages
+set display+=lastline " display as much as possible of the last line
+set formatoptions+=j " delete comment character when joining commented lines
+set nrformats-=octal " numbers starting with zero will NOT be considered octal
+
+if &listchars ==# 'eol:$'
+  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+endif
+
+if has('path_extra')
+  setglobal tags-=./tags tags-=./tags; tags^=./tags;
+endif
+
+if !empty(&viminfo)
+  set viminfo^=!
+endif
 
 " bash-like tab completion
 set wildmode=list:longest,full
@@ -66,6 +94,10 @@ set nowritebackup
 " highlight matching bracket
 set showmatch
 set matchpairs=(:),[:],{:},<:>
+
+" sessions
+set ssop-=options " do not store global and local values in a session
+set ssop-=folds   " do not store folds
 
 " }}}
 
@@ -83,6 +115,28 @@ command! Bgdark :set background=dark
 " R = command output in new tab
 command! -nargs=* -complete=shellcmd Rr tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | 0r !<args>
 command! -nargs=* -complete=shellcmd R  tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | execute '0r !<args>' | filetype detect
+
+" }}}
+
+
+ " Autocommands {{{
+
+augroup configgroup
+  autocmd!
+
+  " vertical bar after 100th character
+  au FileType c,cpp,go,python,sh,javascript,java setlocal colorcolumn=101
+
+  " indentation
+  au FileType c,cpp,go,ant,xml,html,python,tex setlocal expandtab shiftround tabstop=4 shiftwidth=4 softtabstop=4
+  au FileType sh,javascript,java,vim setlocal expandtab shiftround tabstop=2 shiftwidth=2 softtabstop=2
+
+  " restore last position in file when reopened
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+  " used for swapping to the last viewed tab - see shortcuts
+  au TabLeave * let g:lasttab=tabpagenr()
+augroup END
 
 " }}}
 
@@ -121,8 +175,10 @@ vnoremap <M-k> :m '<-2<CR>gv=gv
 vnoremap < <gv
 vnoremap > >gv
 
-" turn off search highlight
-nnoremap <leader><space> :nohlsearch<CR>
+" use <C-L> to clear the highlighting of :set hlsearch.
+if maparg('<C-L>', 'n') ==# ''
+  nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+endif
 
 " move vertically by visual line
 nnoremap j gj
@@ -134,6 +190,10 @@ nnoremap gV `[v`]
 " allow using the repeat operator with a visual selection (!)
 " http://stackoverflow.com/a/8064607/127816
 vnoremap . :normal .<CR>
+
+" recoverable undo
+inoremap <c-u> <c-g>u<c-u>
+inoremap <c-w> <c-g>u<c-w>
 
 " display all lines with keyword under cursor and ask which one to jump to
 nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>

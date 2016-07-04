@@ -33,6 +33,7 @@ Plugin 'SirVer/ultisnips'
 " Install: './install.sh --tern-completer' in ./
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'fatih/vim-go'
+Plugin 'airblade/vim-gitgutter'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -54,8 +55,10 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
 Plugin 'terryma/vim-multiple-cursors'
-Plugin 'tomtom/tcomment_vim'
+Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-rhubarb'
 Plugin 'tpope/vim-surround'
 Plugin 'vim-scripts/Gundo'
 
@@ -78,7 +81,10 @@ import sys
 if 'VIRTUAL_ENV' in os.environ:
   project_base_dir = os.environ['VIRTUAL_ENV']
   activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-  execfile(activate_this, dict(__file__=activate_this))
+  try:
+    execfile(activate_this, dict(__file__=activate_this))
+  except IOError:
+    pass
 EOF
 endif
 
@@ -215,6 +221,8 @@ endif
 
 " Sets {{{
 
+" https://github.com/tpope/vim-sensible/blob/master/plugin/sensible.vim
+
 set directory=~/.vim/swap// " where to save swap files
 set undodir=~/.vim/undo//   " where to save undo histories
 set undofile " persistent undo
@@ -224,6 +232,7 @@ set history=1000 " mum of entries remembered for ':' commands and search pattern
 set cursorline " highlight line with cursor
 set showcmd " show that vim is waiting for key
 set scrolloff=3 " min number of lines to keep above and below the cursor
+set sidescrolloff=5 " min number of columns to keep to sides
 set backspace=indent,eol,start " backspace for dummies
 set number " line numbers on
 set incsearch " search as characters are entered
@@ -235,6 +244,28 @@ set pastetoggle=<leader>pt " pastetoggle (sane indentation on pastes)
 set switchbuf+=usetab,newtab " switch to existing tab or use new tab
 set lazyredraw " redraw only when we need to
 set completeopt-=preview " turn off the preview window
+set autoindent " copy indent from current line when starting a new line
+set smarttab " insert configured number of blanks on <Tab>
+set ruler " show the line and column number of the cursor position
+set autoread " automatically read again changed files
+set ttimeout " time out on key codes
+set ttimeoutlen=100
+set tabpagemax=50 " maximum number of tab pages
+set display+=lastline " display as much as possible of the last line
+set formatoptions+=j " delete comment character when joining commented lines
+set nrformats-=octal " numbers starting with zero will NOT be considered octal
+
+if &listchars ==# 'eol:$'
+  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+endif
+
+if has('path_extra')
+  setglobal tags-=./tags tags-=./tags; tags^=./tags;
+endif
+
+if !empty(&viminfo)
+  set viminfo^=!
+endif
 
 " bash-like tab completion
 set wildmode=list:longest,full
@@ -345,8 +376,10 @@ vnoremap <M-k> :m '<-2<CR>gv=gv
 vnoremap < <gv
 vnoremap > >gv
 
-" turn off search highlight
-nnoremap <leader><space> :nohlsearch<CR>
+" use <C-L> to clear the highlighting of :set hlsearch.
+if maparg('<C-L>', 'n') ==# ''
+  nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+endif
 
 " move vertically by visual line
 nnoremap j gj
@@ -358,6 +391,10 @@ nnoremap gV `[v`]
 " allow using the repeat operator with a visual selection (!)
 " http://stackoverflow.com/a/8064607/127816
 vnoremap . :normal .<CR>
+
+" recoverable undo
+inoremap <c-u> <c-g>u<c-u>
+inoremap <c-w> <c-g>u<c-w>
 
 " display all lines with keyword under cursor and ask which one to jump to
 nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
