@@ -90,4 +90,7 @@ alias lsperm='stat -c "%a %n"'
 alias tmuxx='TERM=xterm-256color /usr/bin/tmux'
 alias tmuxa='tmuxx attach || tmuxx'
 
+# additional aliases
+[ -e ~/.bash_aliases ] && . ~/.bash_aliases
+
 [ -e "/usr/lib/mc/mc-wrapper.sh" ] && alias mc='. /usr/lib/mc/mc-wrapper.sh'
