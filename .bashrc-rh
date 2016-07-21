@@ -26,18 +26,25 @@ GITPROMPT=/usr/share/git-core/contrib/completion/git-prompt.sh
 if [ -e "$GITPROMPT" ]; then
   export GIT_PS1_SHOWDIRTYSTATE=1
   . "$GITPROMPT"
-  GITPS='\033[1;34m$(__git_ps1 " (%s)")'
+  GITPS='\033[1;34m$(__git_ps1 " (%s)")\033[0m'
 else
   GITPS=""
 fi
 unset GITPROMPT
 
+# number of active jobs
+__jobscount() {
+  local jobsc=0
+  for _ in $(jobs -p); do ((jobsc++)); done
+  [ "$jobsc" -gt 0 ] && echo -e -n " \033[0;32m(${jobsc})\033[0m"
+}
+
 # color prompt
 if [ "$UID" != 0 ]; then
-  PS1="\033[1;34m\u\033[0m@\033[0;32m\h\033[0m:\033[0;33m\w$GITPS\033[0m\n\$ "
+  PS1='\033[1;34m\u\033[0m@\033[0;32m\h\033[0m:\033[0;33m\w\033[0m'"$GITPS"'$(__jobscount)\n$ '
 else
   # root shell
-  PS1="\033[1;31m\u\033[0m@\033[0;32m\h\033[0m:\033[0;33m\w$GITPS\033[0m\n# "
+  PS1='\033[1;31m\u\033[0m@\033[0;32m\h\033[0m:\033[0;33m\w\033[0m'"$GITPS"'$(__jobscount)\n# '
 fi
 unset GITPS
 # simple prompt

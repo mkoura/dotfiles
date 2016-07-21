@@ -27,12 +27,19 @@ HISTFILESIZE=4000
 # match all files and zero or more directories and subdirectories.
 #shopt -s globstar
 
+# number of active jobs
+__jobscount() {
+  local jobsc=0
+  for _ in $(jobs -p); do ((jobsc++)); done
+  [ "$jobsc" -gt 0 ] && echo -e -n " \033[0;32m(${jobsc})\033[0m"
+}
+
 # color prompt
 if [ "$UID" != 0 ]; then
-  PS1="\033[1;34m\u\033[0m@\033[0;32m\h\033[0m:\033[0;33m\w\033[0m\n\$ "
+  PS1='\033[1;34m\u\033[0m@\033[0;32m\h\033[0m:\033[0;33m\w\033[0m$(__jobscount)\n$ '
 else
   # root shell
-  PS1="\033[1;31m\u\033[0m@\033[0;32m\h\033[0m:\033[0;33m\w\033[0m\n# "
+  PS1='\033[1;31m\u\033[0m@\033[0;32m\h\033[0m:\033[0;33m\w\033[0m$(__jobscount)\n# '
 fi
 # simple prompt
 #PS1='\u@\h:\w\$ '
