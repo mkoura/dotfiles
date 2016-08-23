@@ -32,6 +32,7 @@ Plugin 'MarcWeber/vim-addon-local-vimrc'
 Plugin 'SirVer/ultisnips'
 " Install: './install.sh --tern-completer' in ./
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'alfredodeza/coveragepy.vim'
 Plugin 'fatih/vim-go'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'altercation/vim-colors-solarized'
