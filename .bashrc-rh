@@ -6,6 +6,10 @@ case $- in
     *) return;;
 esac
 
+# Source global definitions
+[ -f /etc/bashrc ] && . /etc/bashrc
+unset PROMPT_COMMAND
+
 # path to history file
 HISTFILE=~/.bash_history
 
@@ -13,9 +17,6 @@ HISTFILE=~/.bash_history
 # erase duplicates.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth:erasedups
-
-# append to the history file, don't overwrite it
-shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=2000
