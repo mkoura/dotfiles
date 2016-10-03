@@ -55,13 +55,15 @@ Plugin 'othree/javascript-libraries-syntax.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
+Plugin 'sjl/gundo.vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-rhubarb'
 Plugin 'tpope/vim-surround'
-Plugin 'vim-scripts/Gundo'
+Plugin 'xolox/vim-misc' " required for vim-easytags
+Plugin 'xolox/vim-easytags'
 
 call vundle#end()
 filetype plugin indent on
@@ -93,7 +95,10 @@ endif
 "
 " Nerdtree
 "
-nnoremap <F2> :NERDTreeToggle %<CR>
+" show dir of current file
+"nnoremap <F2> :NERDTreeToggle %<CR>
+" show current file in tree
+nnoremap <F2> :NERDTreeFind<CR>
 let NERDTreeShowHidden=1
 
 
@@ -120,6 +125,15 @@ let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
 
 " open new tab when we have to move to a different file
 let g:ycm_goto_buffer_command='new-tab'
+
+" collect also identifiers from tags files
+let g:ycm_collect_identifiers_from_tags_files=1
+
+
+"
+" easytags
+"
+let g:easytags_opts=['--fields=+l']
 
 
 "
