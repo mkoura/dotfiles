@@ -327,12 +327,11 @@ augroup configgroup
   autocmd!
 
   " YouCompleteMe
-  au FileType c,cpp,python,javascript nnoremap <buffer> <C-]> :YcmCompleter GoTo<CR>
-  au FileType c,cpp,python,javascript nnoremap <buffer> <leader>ja :YcmCompleter GoToDefinition<CR>
-  au FileType c,cpp,python,javascript nnoremap <buffer> <leader>gd :YcmCompleter GetDoc<CR>
-  au FileType c,cpp,javascript nnoremap <buffer> <leader>gt :YcmCompleter GetType<CR>
+  au FileType python,javascript nnoremap <buffer> <C-]> :YcmCompleter GoTo<CR>
+  au FileType python,javascript nnoremap <buffer> <leader>ja :YcmCompleter GoToDefinition<CR>
+  au FileType python,javascript nnoremap <buffer> <leader>gd :YcmCompleter GetDoc<CR>
+  au FileType javascript nnoremap <buffer> <leader>gt :YcmCompleter GetType<CR>
   au FileType javascript nnoremap <buffer> <leader>re :YcmCompleter RefactorRename<CR>
-  au FileType c,cpp nnoremap <buffer> <leader>fx :YcmCompleter FixIt<CR>
 
   " vim-go
   au FileType go nmap <buffer> <C-]> <Plug>(go-def-tab)

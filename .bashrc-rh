@@ -27,7 +27,7 @@ GITPROMPT=/usr/share/git-core/contrib/completion/git-prompt.sh
 if [ -e "$GITPROMPT" ]; then
   export GIT_PS1_SHOWDIRTYSTATE=1
   . "$GITPROMPT"
-  GITPS='\033[1;34m$(__git_ps1 " (%s)")\033[0m'
+  GITPS='\033[1;34m$([ -z "$NO_GITPROMPT" ] && __git_ps1 " (%s)")\033[0m'
 else
   GITPS=""
 fi
@@ -73,6 +73,7 @@ alias la='ls -A'
 alias lt='ls -1 -t'
 alias l='ls -CF'
 alias lsperm='stat -c "%a %n"'
+alias gitprompt_toggle='[ -z "$NO_GITPROMPT" ] && export NO_GITPROMPT=1 || unset NO_GITPROMPT'
 alias tmuxx='TERM=xterm-256color /usr/bin/tmux'
 alias tmuxa='tmuxx attach || tmuxx'
 
