@@ -96,6 +96,7 @@ endif
 " NERDTree
 "
 let NERDTreeShowHidden=1
+let NERDTreeQuitOnOpen=1
 
 " show dir of current file
 "nnoremap <F2> :NERDTreeToggle %<CR>
