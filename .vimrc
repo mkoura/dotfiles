@@ -93,13 +93,22 @@ endif
 
 
 "
-" Nerdtree
+" NERDTree
 "
+let NERDTreeShowHidden=1
+
 " show dir of current file
 "nnoremap <F2> :NERDTreeToggle %<CR>
+
 " show current file in tree
-nnoremap <F2> :NERDTreeFind<CR>
-let NERDTreeShowHidden=1
+function! NERDTreeFindToggle()
+  if g:NERDTree.IsOpen()
+    call g:NERDTree.Close()
+  else
+    :NERDTreeFind
+  endif
+endfunction
+nnoremap <F2> :call NERDTreeFindToggle()<CR>
 
 
 "
@@ -258,7 +267,7 @@ set hlsearch " highlight search terms
 set hidden " switch files without saving them first
 set clipboard=unnamedplus " use + register for copy-paste
 set pastetoggle=<leader>pt " pastetoggle (sane indentation on pastes)
-set switchbuf+=usetab,newtab " switch to existing tab or use new tab
+set switchbuf=usetab,newtab " switch to existing tab or use new tab
 set lazyredraw " redraw only when we need to
 set completeopt-=preview " turn off the preview window
 set autoindent " copy indent from current line when starting a new line
