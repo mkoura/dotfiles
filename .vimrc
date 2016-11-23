@@ -26,35 +26,31 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " installed bundles
-Plugin 'KabbAmine/zeavim.vim'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'MarcWeber/vim-addon-local-vimrc'
-Plugin 'SirVer/ultisnips'
-" Install: './install.sh --tern-completer' in ./
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'alfredodeza/coveragepy.vim'
-Plugin 'fatih/vim-go'
+"Plugin 'fatih/vim-go'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-" Install: apt-get install silversearcher-ag (dnf install the_silver_searcher)
-Plugin 'rking/ag.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 " Install: 'git clone https://github.com/matthewsimo/angular-vim-snippets.git'
 " in bundles root
 Plugin 'honza/vim-snippets'
 Plugin 'jlanzarotta/bufexplorer'
-Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'KabbAmine/zeavim.vim'
+Plugin 'Lokaltog/vim-easymotion'
 Plugin 'luochen1990/rainbow'
 " Install: apt-get install exuberant-ctags (dnf install ctags)
 Plugin 'majutsushi/tagbar'
+Plugin 'MarcWeber/vim-addon-local-vimrc'
 Plugin 'mkitt/tabline.vim'
 Plugin 'moll/vim-node'
 Plugin 'myusuf3/numbers.vim'
 Plugin 'othree/javascript-libraries-syntax.vim'
 Plugin 'pangloss/vim-javascript'
+" Install: apt-get install silversearcher-ag (dnf install the_silver_searcher)
+Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
+Plugin 'SirVer/ultisnips'
 Plugin 'sjl/gundo.vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-commentary'
@@ -62,6 +58,10 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-rhubarb'
 Plugin 'tpope/vim-surround'
+" Install: './install.py --tern-completer' in ./
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'xolox/vim-misc' " required for vim-easytags
 Plugin 'xolox/vim-easytags'
 
@@ -182,18 +182,18 @@ let g:syntastic_always_populate_loc_list=1
 " Issue with vim-go and syntastic is that the location list window that
 " contains the output of commands such as :GoBuild and :GoTest might not
 " appear. To resolve this:
-let g:go_list_type="quickfix"
+"let g:go_list_type="quickfix"
 
 " additional highlighting
-let g:go_highlight_functions=1
-let g:go_highlight_methods=1
-let g:go_highlight_structs=1
-let g:go_highlight_interfaces=1
-let g:go_highlight_operators=1
-let g:go_highlight_build_constraints=1
+"let g:go_highlight_functions=1
+"let g:go_highlight_methods=1
+"let g:go_highlight_structs=1
+"let g:go_highlight_interfaces=1
+"let g:go_highlight_operators=1
+"let g:go_highlight_build_constraints=1
 
 " don't :GoFmt automatically on save, let Syntastic take care of it
-let g:go_fmt_autosave=0
+"let g:go_fmt_autosave=0
 
 
 "
@@ -323,7 +323,6 @@ command! Rmw %s/\s\+$//e
 command! Bglight :set background=light
 command! Bgdark :set background=dark
 
-
 " R = command output in new tab
 command! -nargs=* -complete=shellcmd Rr tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | 0r !<args>
 command! -nargs=* -complete=shellcmd R  tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | execute '0r !<args>' | filetype detect
@@ -336,19 +335,18 @@ command! -nargs=* -complete=shellcmd R  tabnew | setlocal buftype=nofile bufhidd
 augroup configgroup
   autocmd!
 
-  " YouCompleteMe
+  " YouCompleteMe plugin
   au FileType python,javascript nnoremap <buffer> <C-]> :YcmCompleter GoTo<CR>
   au FileType python,javascript nnoremap <buffer> <leader>ja :YcmCompleter GoToDefinition<CR>
   au FileType python,javascript nnoremap <buffer> <leader>gd :YcmCompleter GetDoc<CR>
   au FileType javascript nnoremap <buffer> <leader>gt :YcmCompleter GetType<CR>
   au FileType javascript nnoremap <buffer> <leader>re :YcmCompleter RefactorRename<CR>
 
-  " vim-go
-  au FileType go nmap <buffer> <C-]> <Plug>(go-def-tab)
-  au FileType go nmap <buffer> <leader>re <Plug>(go-rename)
+  " vim-go plugin
+  "au FileType go nmap <buffer> <C-]> <Plug>(go-def-tab)
+  "au FileType go nmap <buffer> <leader>re <Plug>(go-rename)
 
-  " Rainbow Parentheses Improved - workaround to make it work with
-  " pangloss/vim-javascript
+  " rainbow plugin - workaround to make it work with pangloss/vim-javascript
   au FileType javascript syntax clear jsFuncBlock
 
   " vertical bar after 100th character
