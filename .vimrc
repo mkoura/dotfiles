@@ -359,7 +359,7 @@ augroup configgroup
   " restore last position in file when reopened
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-  " used for swapping to the last viewed tab - see shortcuts
+  " used for swapping to the last viewed tab - see Key mappings
   au TabLeave * let g:lasttab=tabpagenr()
 augroup END
 

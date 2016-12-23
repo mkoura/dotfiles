@@ -33,10 +33,10 @@ else
 fi
 unset GITPROMPT
 
-# number of active jobs
+# number of stopped jobs
 __jobscount() {
   local jobsc=0
-  for _ in $(jobs -p); do ((jobsc++)); done
+  for _ in $(jobs -ps); do ((jobsc++)); done
   [ "$jobsc" -gt 0 ] && echo -e -n " \033[0;32m(${jobsc})\033[0m"
 }
 
