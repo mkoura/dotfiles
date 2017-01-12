@@ -96,7 +96,7 @@ endif
 " NERDTree
 "
 let NERDTreeShowHidden=1
-let NERDTreeQuitOnOpen=1
+"let NERDTreeQuitOnOpen=1
 
 " show dir of current file
 "nnoremap <F2> :NERDTreeToggle %<CR>
@@ -355,6 +355,9 @@ augroup configgroup
   " indentation
   au FileType c,cpp,go,ant,xml,html,python,tex setlocal expandtab shiftround tabstop=4 shiftwidth=4 softtabstop=4
   au FileType sh,javascript,java,vim setlocal expandtab shiftround tabstop=2 shiftwidth=2 softtabstop=2
+
+  " override 'switchbuf' for quickfix windows
+  au FileType qf setlocal switchbuf=usetab
 
   " restore last position in file when reopened
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
