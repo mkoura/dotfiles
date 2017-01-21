@@ -27,10 +27,10 @@ HISTFILESIZE=4000
 # match all files and zero or more directories and subdirectories.
 #shopt -s globstar
 
-# number of active jobs
+# number of stopped jobs
 __jobscount() {
   local jobsc=0
-  for _ in $(jobs -p); do ((jobsc++)); done
+  for _ in $(jobs -ps); do ((jobsc++)); done
   [ "$jobsc" -gt 0 ] && echo -e -n " \033[0;32m(${jobsc})\033[0m"
 }
 
@@ -94,8 +94,11 @@ alias la='ls -A'
 alias lt='ls -1 -t'
 alias l='ls -CF'
 alias lsperm='stat -c "%a %n"'
+alias dua='du -ahd1 |sort -h'
 alias tmuxx='TERM=xterm-256color /usr/bin/tmux'
 alias tmuxa='tmuxx attach || tmuxx'
+alias tsu='tmux rename-window "SU" && exec su -'
+alias sshnull='ssh -A -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 
 # additional aliases
 [ -e ~/.bash_aliases ] && . ~/.bash_aliases

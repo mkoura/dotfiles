@@ -336,11 +336,11 @@ augroup configgroup
   autocmd!
 
   " YouCompleteMe plugin
-  au FileType python,javascript nnoremap <buffer> <C-]> :YcmCompleter GoTo<CR>
-  au FileType python,javascript nnoremap <buffer> <leader>ja :YcmCompleter GoToDefinition<CR>
-  au FileType python,javascript nnoremap <buffer> <leader>gd :YcmCompleter GetDoc<CR>
-  au FileType javascript nnoremap <buffer> <leader>gt :YcmCompleter GetType<CR>
-  au FileType javascript nnoremap <buffer> <leader>re :YcmCompleter RefactorRename<CR>
+  au FileType python,javascript,typescript nnoremap <buffer> <C-]> :YcmCompleter GoTo<CR>
+  au FileType python,javascript,typescript nnoremap <buffer> <leader>ja :YcmCompleter GoToDefinition<CR>
+  au FileType python,javascript,typescript nnoremap <buffer> <leader>gd :YcmCompleter GetDoc<CR>
+  au FileType javascript,typescript nnoremap <buffer> <leader>gt :YcmCompleter GetType<CR>
+  au FileType javascript,typescript nnoremap <buffer> <leader>re :YcmCompleter RefactorRename<CR>
 
   " vim-go plugin
   "au FileType go nmap <buffer> <C-]> <Plug>(go-def-tab)
@@ -350,14 +350,14 @@ augroup configgroup
   au FileType javascript syntax clear jsFuncBlock
 
   " vertical bar after 100th character
-  au FileType c,cpp,go,python,sh,javascript,java setlocal colorcolumn=101
+  au FileType c,cpp,go,python,sh,javascript,java,typescript setlocal colorcolumn=101
 
   " indentation
-  au FileType c,cpp,go,ant,xml,html,python,tex setlocal expandtab shiftround tabstop=4 shiftwidth=4 softtabstop=4
-  au FileType sh,javascript,java,vim setlocal expandtab shiftround tabstop=2 shiftwidth=2 softtabstop=2
+  au FileType c,cpp,go,ant,xml,html,python,tex,java,javascript,typescript setlocal expandtab shiftround tabstop=4 shiftwidth=4 softtabstop=4
+  au FileType sh,vim setlocal expandtab shiftround tabstop=2 shiftwidth=2 softtabstop=2
 
   " override 'switchbuf' for quickfix windows
-  au FileType qf setlocal switchbuf=usetab
+  au FileType qf setlocal switchbuf=useopen
 
   " restore last position in file when reopened
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
@@ -385,11 +385,15 @@ endif
 " http://stackoverflow.com/questions/2119754/switch-to-last-active-tab-in-vim
 let g:lasttab=1
 nmap <M-t><M-t> :exe "tabn ".g:lasttab<CR>
+imap <M-t><M-t> <ESC>:exe "tabn ".g:lasttab<CR>
 
 " move tab to right
 nmap <M-t><M-l> :tabm +1<CR>
 " move tab to left
 nmap <M-t><M-h> :tabm -1<CR>
+
+" new tab
+nnoremap <leader>tt :tabnew<CR>
 
 " moving lines up and down
 nnoremap <M-j> :m .+1<CR>==
