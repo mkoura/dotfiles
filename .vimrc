@@ -35,6 +35,7 @@ Plugin 'ctrlpvim/ctrlp.vim'
 " in bundles root
 Plugin 'honza/vim-snippets'
 Plugin 'jlanzarotta/bufexplorer'
+Plugin 'jpalardy/vim-slime'
 Plugin 'KabbAmine/zeavim.vim'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'luochen1990/rainbow'
@@ -154,6 +155,7 @@ let g:UltiSnipsJumpForwardTrigger='<c-j>'
 let g:UltiSnipsJumpBackwardTrigger='<c-k>'
 let g:UltiSnipsListSnippets='<c-e>'
 let g:UltiSnipsEditSplit='vertical'
+let g:UltiSnipsSnippetsDir='~/.vim/UltiSnips'
 "let g:UltiSnipsUsePythonVersion=2
 
 
@@ -194,6 +196,14 @@ let g:syntastic_always_populate_loc_list=1
 
 " don't :GoFmt automatically on save, let Syntastic take care of it
 "let g:go_fmt_autosave=0
+
+
+"
+" vim-slime
+"
+let g:slime_target='tmux'
+let g:slime_default_config={'socket_name': 'default', 'target_pane': ':.1'}
+let g:slime_python_ipython=1
 
 
 "
@@ -337,7 +347,8 @@ augroup configgroup
 
   " YouCompleteMe plugin
   au FileType python,javascript,typescript nnoremap <buffer> <C-]> :YcmCompleter GoTo<CR>
-  au FileType python,javascript,typescript nnoremap <buffer> <leader>ja :YcmCompleter GoToDefinition<CR>
+  au FileType python,javascript,typescript nnoremap <buffer> <leader>jd :YcmCompleter GoToDefinition<CR>
+  au FileType python,javascript,typescript nnoremap <buffer> <leader>jr :YcmCompleter GoToReferences<CR>
   au FileType python,javascript,typescript nnoremap <buffer> <leader>gd :YcmCompleter GetDoc<CR>
   au FileType javascript,typescript nnoremap <buffer> <leader>gt :YcmCompleter GetType<CR>
   au FileType javascript,typescript nnoremap <buffer> <leader>re :YcmCompleter RefactorRename<CR>
