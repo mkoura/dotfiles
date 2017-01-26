@@ -333,6 +333,10 @@ command! Rmw %s/\s\+$//e
 command! Bglight :set background=light
 command! Bgdark :set background=dark
 
+" spellchecking in current buffer
+command! SpellEN :setlocal spell spelllang=en_us
+command! SpellOff :setlocal nospell
+
 " R = command output in new tab
 command! -nargs=* -complete=shellcmd Rr tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | 0r !<args>
 command! -nargs=* -complete=shellcmd R  tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | execute '0r !<args>' | filetype detect
