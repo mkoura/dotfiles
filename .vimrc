@@ -34,7 +34,6 @@ Plugin 'ctrlpvim/ctrlp.vim'
 " Install: 'git clone https://github.com/matthewsimo/angular-vim-snippets.git'
 " in bundles root
 Plugin 'honza/vim-snippets'
-Plugin 'jlanzarotta/bufexplorer'
 Plugin 'jpalardy/vim-slime'
 Plugin 'KabbAmine/zeavim.vim'
 Plugin 'Lokaltog/vim-easymotion'
@@ -42,7 +41,6 @@ Plugin 'luochen1990/rainbow'
 " Install: apt-get install exuberant-ctags (dnf install ctags)
 Plugin 'majutsushi/tagbar'
 Plugin 'MarcWeber/vim-addon-local-vimrc'
-Plugin 'mkitt/tabline.vim'
 Plugin 'moll/vim-node'
 Plugin 'myusuf3/numbers.vim'
 Plugin 'othree/javascript-libraries-syntax.vim'
@@ -123,6 +121,12 @@ nnoremap <F4> :GundoToggle<CR>
 " Tagbar
 "
 nnoremap <F8> :TagbarToggle<CR>
+
+
+"
+" Ag
+"
+nnoremap gr :split<CR>:Ag '\b<cword>\b'<CR>
 
 
 "
@@ -211,7 +215,10 @@ let g:slime_python_ipython=1
 "
 set laststatus=2 " show statusline all the time
 let g:airline_theme='solarized' " make sure solarized is used
-let g:airline_powerline_fonts=0 " 'apt-get install fonts-powerline' first
+let g:airline_powerline_fonts=1 " apt-get install fonts-powerline (dnf install powerline-fonts)
+let g:airline#extensions#tabline#enabled = 1 " list of buffers
+let g:airline#extensions#tabline#fnamemod = ':t' " show just the filename
+let g:airline#extensions#tabline#tab_nr_type = 1 " show tab numbers
 
 
 "
@@ -408,7 +415,7 @@ nmap <M-t><M-l> :tabm +1<CR>
 nmap <M-t><M-h> :tabm -1<CR>
 
 " new tab
-nnoremap <leader>tt :tabnew<CR>
+nnoremap <leader>tt :$tabnew<CR>
 
 " moving lines up and down
 nnoremap <M-j> :m .+1<CR>==
@@ -421,6 +428,9 @@ vnoremap <M-k> :m '<-2<CR>gv=gv
 " visual shifting (does not exit Visual mode)
 vnoremap < <gv
 vnoremap > >gv
+
+" search for visually selected text
+vnoremap // y/<C-R>"<CR>
 
 " use <C-L> to clear the highlighting of :set hlsearch.
 if maparg('<C-L>', 'n') ==# ''
@@ -443,7 +453,7 @@ inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
 
 " display all lines with keyword under cursor and ask which one to jump to
-nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
+nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe 'normal ' . nr .'[\t'<CR>
 
 " for when you forget to sudo.. Really Write the file.
 cmap w!! w !sudo tee % >/dev/null
