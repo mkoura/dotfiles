@@ -281,7 +281,7 @@ set backspace=indent,eol,start " backspace for dummies
 set number " line numbers on
 set incsearch " search as characters are entered
 set hlsearch " highlight search terms
-"set mouse=a " set mouse=a
+set mouse=a " enable mouse for all modes
 set hidden " switch files without saving them first
 set clipboard=unnamedplus " use + register for copy-paste
 set pastetoggle=<leader>pt " pastetoggle (sane indentation on pastes)
