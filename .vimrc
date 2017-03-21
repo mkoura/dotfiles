@@ -26,17 +26,15 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " installed bundles
-Plugin 'alfredodeza/coveragepy.vim'
-"Plugin 'fatih/vim-go'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'ctrlpvim/ctrlp.vim'
-" Install: 'git clone https://github.com/matthewsimo/angular-vim-snippets.git'
-" in bundles root
-Plugin 'honza/vim-snippets'
+Plugin 'danro/rename.vim'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'godlygeek/tabular' " required for plasticboy/vim-markdown
 Plugin 'jpalardy/vim-slime'
 Plugin 'KabbAmine/zeavim.vim'
-Plugin 'Lokaltog/vim-easymotion'
+Plugin 'easymotion/vim-easymotion'
 Plugin 'luochen1990/rainbow'
 " Install: apt-get install exuberant-ctags (dnf install ctags)
 Plugin 'majutsushi/tagbar'
@@ -45,24 +43,25 @@ Plugin 'moll/vim-node'
 Plugin 'myusuf3/numbers.vim'
 Plugin 'othree/javascript-libraries-syntax.vim'
 Plugin 'pangloss/vim-javascript'
+Plugin 'plasticboy/vim-markdown'
 " Install: apt-get install silversearcher-ag (dnf install the_silver_searcher)
 Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
-Plugin 'SirVer/ultisnips'
+Plugin 'Shougo/neocomplete.vim'
+Plugin 'Shougo/neosnippet.vim'
+Plugin 'Shougo/neosnippet-snippets'
 Plugin 'sjl/gundo.vim'
-Plugin 'terryma/vim-multiple-cursors'
+Plugin 'tpope/vim-bundler'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-rhubarb'
 Plugin 'tpope/vim-surround'
-" Install: './install.py --tern-completer' in ./
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'xolox/vim-misc' " required for vim-easytags
-Plugin 'xolox/vim-easytags'
+Plugin 'vim-ruby/vim-ruby'
 
 call vundle#end()
 filetype plugin indent on
@@ -76,7 +75,7 @@ filetype plugin indent on
 "
 " Python with virtualenv support
 "
-if ! has("gui_running")
+if ! has('gui_running')
 py << EOF
 import os
 import sys
@@ -110,6 +109,9 @@ function! NERDTreeFindToggle()
 endfunction
 nnoremap <F2> :call NERDTreeFindToggle()<CR>
 
+" open NERDTree on "zim" bookmark
+command! Zim if bufname('%') != '' | $tabnew | endif | NERDTree zim
+
 
 "
 " Gundo
@@ -126,41 +128,61 @@ nnoremap <F8> :TagbarToggle<CR>
 "
 " Ag
 "
-nnoremap gr :split<CR>:Ag '\b<cword>\b'<CR>
+"nnoremap <leader>gr :split<CR>:Ag '\b<cword>\b'<CR>
+nnoremap <leader>gr :Ag '\b<cword>\b'<CR>
 
 
 "
-" YouCompleteMe
+" jedi-vim
 "
-" tell ycmd to use Python2 even in Python3 venvs
-"let g:ycm_server_python_interpreter='/usr/bin/python2'
-
-" fallback path to a compilation flags config file
-let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
-
-" open new tab when we have to move to a different file
-let g:ycm_goto_buffer_command='new-tab'
-
-" collect also identifiers from tags files
-let g:ycm_collect_identifiers_from_tags_files=1
+let g:jedi#completions_enabled=0
+let g:jedi#auto_vim_configuration=0
+let g:jedi#smart_auto_mappings=0
+let g:jedi#goto_command='<C-]>'
+let g:jedi#goto_assignments_command='<leader>jd'
+let g:jedi#goto_definitions_command=''
+let g:jedi#documentation_command='<leader>gd'
+let g:jedi#usages_command='<leader>jr'
+let g:jedi#rename_command='<leader>re'
 
 
 "
-" easytags
+" neocomplete
 "
-let g:easytags_opts=['--fields=+l']
+let g:neocomplete#enable_at_startup=1
+let g:neocomplete#enable_smart_case=1
+let g:neocomplete#sources#syntax#min_keyword_length=3
+
+" <TAB>: completion.
+inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+" <Up>, <Down>" : completion.
+inoremap <expr><Down> pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr><Up> pumvisible() ? "\<C-p>" : "\<Up>"
+
+if !exists('g:neocomplete#force_omni_input_patterns')
+  let g:neocomplete#force_omni_input_patterns={}
+endif
+let g:neocomplete#force_omni_input_patterns.python='\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
+let g:neocomplete#force_omni_input_patterns.ruby='[^. *\t]\.\w*\|\h\w*::'
 
 
 "
-" UltiSnips
+" neosnippet
 "
-let g:UltiSnipsExpandTrigger='<c-j>'
-let g:UltiSnipsJumpForwardTrigger='<c-j>'
-let g:UltiSnipsJumpBackwardTrigger='<c-k>'
-let g:UltiSnipsListSnippets='<c-e>'
-let g:UltiSnipsEditSplit='vertical'
-let g:UltiSnipsSnippetsDir='~/.vim/UltiSnips'
-"let g:UltiSnipsUsePythonVersion=2
+" SuperTab like snippets behavior.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <C-j> <Plug>(neosnippet_expand_or_jump)
+"imap <expr><TAB>
+" \ pumvisible() ? "\<C-n>" :
+" \ neosnippet#expandable_or_jumpable() ?
+" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+" For conceal markers.
+if has('conceal')
+  set conceallevel=2 concealcursor=niv
+endif
 
 
 "
@@ -177,29 +199,9 @@ let g:ctrlp_switch_buffer='Et'
 let g:syntastic_python_flake8_args='--max-line-length=100'
 let g:syntastic_python_checkers=['pylint', 'flake8']
 let g:syntastic_go_checkers=['gofmt', 'govet']
-let g:syntastic_mode_map={ 'mode': 'active', 'passive_filetypes': ['java'] }
+let g:syntastic_mode_map={ 'mode': 'active', 'passive_filetypes': ['java', 'markdown'] }
 " to be able to use :lnext and :lprev
 let g:syntastic_always_populate_loc_list=1
-
-
-"
-" vim-go
-"
-" Issue with vim-go and syntastic is that the location list window that
-" contains the output of commands such as :GoBuild and :GoTest might not
-" appear. To resolve this:
-"let g:go_list_type="quickfix"
-
-" additional highlighting
-"let g:go_highlight_functions=1
-"let g:go_highlight_methods=1
-"let g:go_highlight_structs=1
-"let g:go_highlight_interfaces=1
-"let g:go_highlight_operators=1
-"let g:go_highlight_build_constraints=1
-
-" don't :GoFmt automatically on save, let Syntastic take care of it
-"let g:go_fmt_autosave=0
 
 
 "
@@ -216,9 +218,9 @@ let g:slime_python_ipython=1
 set laststatus=2 " show statusline all the time
 let g:airline_theme='solarized' " make sure solarized is used
 let g:airline_powerline_fonts=1 " apt-get install fonts-powerline (dnf install powerline-fonts)
-let g:airline#extensions#tabline#enabled = 1 " list of buffers
-let g:airline#extensions#tabline#fnamemod = ':t' " show just the filename
-let g:airline#extensions#tabline#tab_nr_type = 1 " show tab numbers
+let g:airline#extensions#tabline#enabled=1 " list of buffers
+let g:airline#extensions#tabline#fnamemod=':t' " show just the filename
+let g:airline#extensions#tabline#tab_nr_type=1 " show tab numbers
 
 
 "
@@ -230,6 +232,13 @@ let g:rainbow_conf={
   \   'ctermfgs': ['brown', 'Darkblue', 'darkgray', 'darkgreen'],
   \   'guifgs': ['RoyalBlue3', 'SeaGreen3', 'DarkOrchid3', 'firebrick3'],
   \}
+
+
+"
+" vim-markdown
+"
+" header folding level
+let g:vim_markdown_folding_level=4
 
 
 "
@@ -281,11 +290,11 @@ set backspace=indent,eol,start " backspace for dummies
 set number " line numbers on
 set incsearch " search as characters are entered
 set hlsearch " highlight search terms
-set mouse=a " enable mouse for all modes
+"set mouse=a " enable mouse for all modes
 set hidden " switch files without saving them first
 set clipboard=unnamedplus " use + register for copy-paste
 set pastetoggle=<leader>pt " pastetoggle (sane indentation on pastes)
-set switchbuf=usetab,newtab " switch to existing tab or use new tab
+set switchbuf=split " use new split
 set lazyredraw " redraw only when we need to
 set completeopt-=preview " turn off the preview window
 set autoindent " copy indent from current line when starting a new line
@@ -345,8 +354,8 @@ command! SpellEN :setlocal spell spelllang=en_us
 command! SpellOff :setlocal nospell
 
 " R = command output in new tab
-command! -nargs=* -complete=shellcmd Rr tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | 0r !<args>
-command! -nargs=* -complete=shellcmd R  tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | execute '0r !<args>' | filetype detect
+command! -nargs=* -complete=shellcmd Rr tabnew<Bar>setlocal buftype=nofile bufhidden=hide noswapfile nowrap<Bar>0r !<args>
+command! -nargs=* -complete=shellcmd R  tabnew<Bar>setlocal buftype=nofile bufhidden=hide noswapfile nowrap<Bar>execute '0r !<args>'<Bar>filetype detect
 
 " }}}
 
@@ -356,27 +365,22 @@ command! -nargs=* -complete=shellcmd R  tabnew | setlocal buftype=nofile bufhidd
 augroup configgroup
   autocmd!
 
-  " YouCompleteMe plugin
-  au FileType python,javascript,typescript nnoremap <buffer> <C-]> :YcmCompleter GoTo<CR>
-  au FileType python,javascript,typescript nnoremap <buffer> <leader>jd :YcmCompleter GoToDefinition<CR>
-  au FileType python,javascript,typescript nnoremap <buffer> <leader>jr :YcmCompleter GoToReferences<CR>
-  au FileType python,javascript,typescript nnoremap <buffer> <leader>gd :YcmCompleter GetDoc<CR>
-  au FileType javascript,typescript nnoremap <buffer> <leader>gt :YcmCompleter GetType<CR>
-  au FileType javascript,typescript nnoremap <buffer> <leader>re :YcmCompleter RefactorRename<CR>
-
-  " vim-go plugin
-  "au FileType go nmap <buffer> <C-]> <Plug>(go-def-tab)
-  "au FileType go nmap <buffer> <leader>re <Plug>(go-rename)
+  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType python setlocal omnifunc=jedi#completions
+	autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
   " rainbow plugin - workaround to make it work with pangloss/vim-javascript
   au FileType javascript syntax clear jsFuncBlock
 
   " vertical bar after 100th character
-  au FileType c,cpp,go,python,sh,javascript,java,typescript setlocal colorcolumn=101
+  au FileType c,cpp,go,python,sh,javascript,java,typescript,ruby setlocal colorcolumn=101
 
   " indentation
-  au FileType c,cpp,go,ant,xml,html,python,tex,java,javascript,typescript setlocal expandtab shiftround tabstop=4 shiftwidth=4 softtabstop=4
-  au FileType sh,vim setlocal expandtab shiftround tabstop=2 shiftwidth=2 softtabstop=2
+  au FileType c,cpp,go,ant,xml,html,python,tex,java,javascript,typescript,markdown setlocal expandtab shiftround tabstop=4 shiftwidth=4 softtabstop=4
+  au FileType sh,vim,ruby setlocal expandtab shiftround tabstop=2 shiftwidth=2 softtabstop=2
 
   " override 'switchbuf' for quickfix windows
   au FileType qf setlocal switchbuf=useopen
@@ -395,19 +399,23 @@ augroup END
 
 " fix Alt key in console
 " for mapped keys
-if ! has("gui_running")
+if ! has('gui_running')
   set <M-h>=h
   set <M-j>=j
   set <M-k>=k
   set <M-l>=l
   set <M-t>=t
+  set <M-p>=p
+  set <M-e>=e
+  set <M-n>=n
+  set <M-b>=b
 endif
 
 " swap to the last viewed tab
 " http://stackoverflow.com/questions/2119754/switch-to-last-active-tab-in-vim
 let g:lasttab=1
-nmap <M-t><M-t> :exe "tabn ".g:lasttab<CR>
-imap <M-t><M-t> <ESC>:exe "tabn ".g:lasttab<CR>
+nmap <M-t><M-t> :exe 'tabn '.g:lasttab<CR>
+imap <M-t><M-t> <ESC>:exe 'tabn '.g:lasttab<CR>
 
 " move tab to right
 nmap <M-t><M-l> :tabm +1<CR>
@@ -432,6 +440,9 @@ vnoremap > >gv
 " search for visually selected text
 vnoremap // y/<C-R>"<CR>
 
+" highlight word without jumping
+nnoremap * *``
+
 " use <C-L> to clear the highlighting of :set hlsearch.
 if maparg('<C-L>', 'n') ==# ''
   nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
@@ -453,7 +464,7 @@ inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
 
 " display all lines with keyword under cursor and ask which one to jump to
-nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe 'normal ' . nr .'[\t'<CR>
+nmap <Leader>ff [I:let nr = input('Which one: ')<Bar>exe 'normal ' . nr .'[\t'<CR>
 
 " for when you forget to sudo.. Really Write the file.
 cmap w!! w !sudo tee % >/dev/null
