@@ -405,11 +405,19 @@ if ! has('gui_running')
   set <M-k>=k
   set <M-l>=l
   set <M-t>=t
-  set <M-p>=p
-  set <M-e>=e
-  set <M-n>=n
-  set <M-b>=b
 endif
+
+" split navigations
+nnoremap <M-j> <C-W><C-J>
+nnoremap <M-k> <C-W><C-K>
+nnoremap <M-l> <C-W><C-L>
+nnoremap <M-h> <C-W><C-H>
+
+" moving lines up and down
+inoremap <M-j> <Esc>:m .+1<CR>==gi
+inoremap <M-k> <Esc>:m .-2<CR>==gi
+vnoremap <M-j> :m '>+1<CR>gv=gv
+vnoremap <M-k> :m '<-2<CR>gv=gv
 
 " swap to the last viewed tab
 " http://stackoverflow.com/questions/2119754/switch-to-last-active-tab-in-vim
@@ -424,14 +432,6 @@ nmap <M-t><M-h> :tabm -1<CR>
 
 " new tab
 nnoremap <leader>tt :$tabnew<CR>
-
-" moving lines up and down
-nnoremap <M-j> :m .+1<CR>==
-nnoremap <M-k> :m .-2<CR>==
-inoremap <M-j> <Esc>:m .+1<CR>==gi
-inoremap <M-k> <Esc>:m .-2<CR>==gi
-vnoremap <M-j> :m '>+1<CR>gv=gv
-vnoremap <M-k> :m '<-2<CR>gv=gv
 
 " visual shifting (does not exit Visual mode)
 vnoremap < <gv
