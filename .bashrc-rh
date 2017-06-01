@@ -77,7 +77,7 @@ alias dua='du -ahd1 |sort -h'
 alias gitprompt_toggle='[ -z "$NO_GITPROMPT" ] && export NO_GITPROMPT=1 || unset NO_GITPROMPT'
 alias tmuxx='TERM=xterm-256color /usr/bin/tmux'
 alias tmuxa='tmuxx attach -t 0 || tmuxx new -s 0'
-alias tmuxss='tmux split-window -h -p 35'
+alias tmuxss='tmux split-window -h -p 36'
 alias sshnull='ssh -A -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 alias scpnull='scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 
