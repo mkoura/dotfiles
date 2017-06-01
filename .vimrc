@@ -46,22 +46,18 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'plasticboy/vim-markdown'
 " Install: apt-get install silversearcher-ag (dnf install the_silver_searcher)
 Plugin 'rking/ag.vim'
-Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
 Plugin 'Shougo/neocomplete.vim'
 Plugin 'Shougo/neosnippet.vim'
 Plugin 'Shougo/neosnippet-snippets'
 Plugin 'sjl/gundo.vim'
-Plugin 'tpope/vim-bundler'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-rhubarb'
 Plugin 'tpope/vim-surround'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'vim-ruby/vim-ruby'
 
 call vundle#end()
 filetype plugin indent on
@@ -90,27 +86,16 @@ EOF
 endif
 
 
+
 "
-" NERDTree
+" NERDTree-like netrw
 "
-let NERDTreeShowHidden=1
-"let NERDTreeQuitOnOpen=1
-
-" show dir of current file
-"nnoremap <F2> :NERDTreeToggle %<CR>
-
-" show current file in tree
-function! NERDTreeFindToggle()
-  if g:NERDTree.IsOpen()
-    call g:NERDTree.Close()
-  else
-    :NERDTreeFind
-  endif
-endfunction
-nnoremap <F2> :call NERDTreeFindToggle()<CR>
-
-" open NERDTree on "zim" bookmark
-command! Zim if bufname('%') != '' | $tabnew | endif | NERDTree zim
+let g:netrw_liststyle=3
+let g:netrw_browse_split=4
+let g:netrw_altv=1
+let g:netrw_winsize=25
+let g:netrw_banner=0
+nnoremap <F2> :Lexplore<CR>
 
 
 "
@@ -135,9 +120,14 @@ nnoremap <leader>gr :Ag '\b<cword>\b'<CR>
 "
 " jedi-vim
 "
+" for use with neocomplete
 let g:jedi#completions_enabled=0
 let g:jedi#auto_vim_configuration=0
 let g:jedi#smart_auto_mappings=0
+
+" don't display function call signatures
+let g:jedi#show_call_signatures=0
+
 let g:jedi#goto_command='<C-]>'
 let g:jedi#goto_assignments_command='<leader>jd'
 let g:jedi#goto_definitions_command=''
@@ -163,7 +153,7 @@ if !exists('g:neocomplete#force_omni_input_patterns')
   let g:neocomplete#force_omni_input_patterns={}
 endif
 let g:neocomplete#force_omni_input_patterns.python='\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
-let g:neocomplete#force_omni_input_patterns.ruby='[^. *\t]\.\w*\|\h\w*::'
+"let g:neocomplete#force_omni_input_patterns.ruby='[^. *\t]\.\w*\|\h\w*::'
 
 
 "
@@ -307,6 +297,7 @@ set tabpagemax=50 " maximum number of tab pages
 set display+=lastline " display as much as possible of the last line
 set formatoptions+=j " delete comment character when joining commented lines
 set nrformats-=octal " numbers starting with zero will NOT be considered octal
+set wmh=0 " don't show one line of minimized split
 
 if &listchars ==# 'eol:$'
   set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
@@ -369,7 +360,7 @@ augroup configgroup
   autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
   autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
   autocmd FileType python setlocal omnifunc=jedi#completions
-  autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+  "autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
   autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
   " rainbow plugin - workaround to make it work with pangloss/vim-javascript
