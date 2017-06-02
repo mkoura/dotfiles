@@ -56,6 +56,7 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-rhubarb'
 Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-vinegar'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
@@ -88,14 +89,9 @@ endif
 
 
 "
-" NERDTree-like netrw
+" vim-vinegar
 "
-let g:netrw_liststyle=3
-let g:netrw_browse_split=4
-let g:netrw_altv=1
-let g:netrw_winsize=25
-let g:netrw_banner=0
-nnoremap <F2> :Lexplore<CR>
+nnoremap <F2> :Explore<CR>
 
 
 "
