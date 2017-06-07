@@ -27,6 +27,7 @@ Plugin 'VundleVim/Vundle.vim'
 
 " installed bundles
 Plugin 'airblade/vim-gitgutter'
+Plugin 'airblade/vim-rooter'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'danro/rename.vim'
@@ -39,10 +40,7 @@ Plugin 'luochen1990/rainbow'
 " Install: apt-get install exuberant-ctags (dnf install ctags)
 Plugin 'majutsushi/tagbar'
 Plugin 'MarcWeber/vim-addon-local-vimrc'
-Plugin 'moll/vim-node'
 Plugin 'myusuf3/numbers.vim'
-Plugin 'othree/javascript-libraries-syntax.vim'
-Plugin 'pangloss/vim-javascript'
 Plugin 'plasticboy/vim-markdown'
 " Install: apt-get install silversearcher-ag (dnf install the_silver_searcher)
 Plugin 'rking/ag.vim'
@@ -89,12 +87,6 @@ endif
 
 
 "
-" vim-vinegar
-"
-nnoremap <F2> :Explore<CR>
-
-
-"
 " Gundo
 "
 nnoremap <F4> :GundoToggle<CR>
@@ -114,6 +106,12 @@ nnoremap <leader>gr :Ag '\b<cword>\b'<CR>
 
 
 "
+" netrw
+"
+nnoremap <F2> :Explore<CR>
+
+
+"
 " jedi-vim
 "
 " for use with neocomplete
@@ -121,8 +119,9 @@ let g:jedi#completions_enabled=0
 let g:jedi#auto_vim_configuration=0
 let g:jedi#smart_auto_mappings=0
 
-" don't display function call signatures
-let g:jedi#show_call_signatures=0
+" display function call signatures in command line
+set noshowmode
+let g:jedi#show_call_signatures=2
 
 let g:jedi#goto_command='<C-]>'
 let g:jedi#goto_assignments_command='<leader>jd'
@@ -207,6 +206,12 @@ let g:airline_powerline_fonts=1 " apt-get install fonts-powerline (dnf install p
 let g:airline#extensions#tabline#enabled=1 " list of buffers
 let g:airline#extensions#tabline#fnamemod=':t' " show just the filename
 let g:airline#extensions#tabline#tab_nr_type=1 " show tab numbers
+
+
+"
+" vim-rooter
+"
+let g:rooter_use_lcd=1
 
 
 "
@@ -360,7 +365,7 @@ augroup configgroup
   autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
   " rainbow plugin - workaround to make it work with pangloss/vim-javascript
-  au FileType javascript syntax clear jsFuncBlock
+  "au FileType javascript syntax clear jsFuncBlock
 
   " vertical bar after 100th character
   au FileType c,cpp,go,python,sh,javascript,java,typescript,ruby setlocal colorcolumn=101
