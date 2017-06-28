@@ -34,7 +34,6 @@ Plugin 'danro/rename.vim'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'godlygeek/tabular' " required for plasticboy/vim-markdown
 Plugin 'jpalardy/vim-slime'
-Plugin 'KabbAmine/zeavim.vim'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'luochen1990/rainbow'
 " Install: apt-get install exuberant-ctags (dnf install ctags)
@@ -203,6 +202,7 @@ let g:slime_python_ipython=1
 set laststatus=2 " show statusline all the time
 let g:airline_theme='solarized' " make sure solarized is used
 let g:airline_powerline_fonts=1 " apt-get install fonts-powerline (dnf install powerline-fonts)
+let g:airline_exclude_preview=1 " disble for preview windows
 let g:airline#extensions#tabline#enabled=1 " list of buffers
 let g:airline#extensions#tabline#fnamemod=':t' " show just the filename
 let g:airline#extensions#tabline#tab_nr_type=1 " show tab numbers
@@ -287,18 +287,19 @@ set clipboard=unnamedplus " use + register for copy-paste
 set pastetoggle=<leader>pt " pastetoggle (sane indentation on pastes)
 set switchbuf=split " use new split
 set lazyredraw " redraw only when we need to
-set completeopt-=preview " turn off the preview window
+"set completeopt-=preview " turn off the preview window
 set autoindent " copy indent from current line when starting a new line
 set smarttab " insert configured number of blanks on <Tab>
 set ruler " show the line and column number of the cursor position
 set autoread " automatically read again changed files
 set ttimeout " time out on key codes
-set ttimeoutlen=100
+set ttimeoutlen=800
 set tabpagemax=50 " maximum number of tab pages
 set display+=lastline " display as much as possible of the last line
 set formatoptions+=j " delete comment character when joining commented lines
 set nrformats-=octal " numbers starting with zero will NOT be considered octal
 set wmh=0 " don't show one line of minimized split
+set tabstop=4 shiftwidth=4 softtabstop=4 expandtab " use spaces instead of tabs
 
 if &listchars ==# 'eol:$'
   set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
@@ -371,8 +372,8 @@ augroup configgroup
   au FileType c,cpp,go,python,sh,javascript,java,typescript,ruby setlocal colorcolumn=101
 
   " indentation
-  au FileType c,cpp,go,ant,xml,html,python,tex,java,javascript,typescript,markdown setlocal expandtab shiftround tabstop=4 shiftwidth=4 softtabstop=4
-  au FileType sh,vim,ruby setlocal expandtab shiftround tabstop=2 shiftwidth=2 softtabstop=2
+  au FileType make setlocal noexpandtab " use real tabs for Makefiles
+  au FileType sh,vim,ruby setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 
   " override 'switchbuf' for quickfix windows
   au FileType qf setlocal switchbuf=useopen
