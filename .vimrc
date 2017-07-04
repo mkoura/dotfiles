@@ -379,6 +379,9 @@ augroup configgroup
   " override 'switchbuf' for quickfix windows
   au FileType qf setlocal switchbuf=useopen
 
+  " word wrapping for text files
+  au FileType txt,markdown,tex setlocal wrap linebreak nolist textwidth=0 wrapmargin=0
+
   " restore last position in file when reopened
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
