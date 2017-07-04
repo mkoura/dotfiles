@@ -359,12 +359,12 @@ command! -nargs=* -complete=shellcmd R  tabnew<Bar>setlocal buftype=nofile bufhi
 augroup configgroup
   autocmd!
 
-  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-  autocmd FileType python setlocal omnifunc=jedi#completions
-  "autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+  au FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  au FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  au FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  au FileType python setlocal omnifunc=jedi#completions
+  "au FileType ruby setlocal omnifunc=rubycomplete#Complete
+  au FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
   " rainbow plugin - workaround to make it work with pangloss/vim-javascript
   "au FileType javascript syntax clear jsFuncBlock
