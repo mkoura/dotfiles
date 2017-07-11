@@ -382,6 +382,9 @@ augroup configgroup
   " word wrapping for text files
   au FileType txt,markdown,tex setlocal wrap linebreak nolist textwidth=0 wrapmargin=0
 
+  " don't conceal quotes in JSON
+  au FileType json setlocal conceallevel=0
+
   " restore last position in file when reopened
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
