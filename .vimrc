@@ -173,7 +173,7 @@ endif
 " CtrlP
 "
 let g:ctrlp_max_files=50000
-let g:ctrlp_user_command='ag %s -l --nocolor -g ""'
+let g:ctrlp_user_command='ag %s -f -l --nocolor -g ""'
 let g:ctrlp_switch_buffer='Et'
 
 
@@ -358,6 +358,9 @@ command! -nargs=* -complete=shellcmd R  tabnew<Bar>setlocal buftype=nofile bufhi
 
 augroup configgroup
   autocmd!
+
+  " skeletons
+  au BufNewFile *.py 0r ~/.vim/templates/skeleton.py
 
   au FileType css setlocal omnifunc=csscomplete#CompleteCSS
   au FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
