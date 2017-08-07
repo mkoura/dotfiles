@@ -1,0 +1,8 @@
+*.py[cod]
+
+# .vim
+.vim-*/bundle/*
+.vim-*/s/*
+.vim-*/swap/*
+.vim-*/undo/*
+.vim-*/.netrwhist
