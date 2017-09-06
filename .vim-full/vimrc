@@ -38,7 +38,6 @@ Plugin 'easymotion/vim-easymotion'
 Plugin 'luochen1990/rainbow'
 " Install: apt-get install exuberant-ctags (dnf install ctags)
 Plugin 'majutsushi/tagbar'
-Plugin 'myusuf3/numbers.vim'
 Plugin 'plasticboy/vim-markdown'
 " Install: apt-get install silversearcher-ag (dnf install the_silver_searcher)
 Plugin 'rking/ag.vim'
@@ -277,7 +276,7 @@ set showcmd " show that vim is waiting for key
 set scrolloff=3 " min number of lines to keep above and below the cursor
 set sidescrolloff=5 " min number of columns to keep to sides
 set backspace=indent,eol,start " backspace for dummies
-set number " line numbers on
+"set number relativenumber  " relative line numbers
 set incsearch " search as characters are entered
 set hlsearch " highlight search terms
 "set mouse=a " enable mouse for all modes
