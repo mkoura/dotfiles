@@ -45,9 +45,6 @@ export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on"
 # Midnight Commander skin
 export MC_SKIN=/usr/share/mc/skins/modarin256-defbg.ini
 
-# run here as it's needed for both shell and X sessions
-hash tmpcache.sh 2>/dev/null && tmpcache.sh
-
 unset -f pathmunge
 
 # if running bash
