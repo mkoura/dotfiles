@@ -1,18 +1,4 @@
 #!/bin/sh
 
-# include ~/.env
-[ -e "$HOME/.env" ] && . "$HOME/.env"
-
-# fix Java (GUI appears gray only)
-#wmname LG3D
-
 # switch off annoying bell
 xset b off
-
-# move cursor to top left corner...
-#xdotool mousemove 30 30
-# ... and mount user volumes
-#usermounts.sh
-
-# KDE - remap mic mute key to work in KDE
-#xmodmap -e "keycode 198 = XF86Away"
