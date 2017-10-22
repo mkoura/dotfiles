@@ -35,9 +35,6 @@ pathmunge "$HOME/bin"
 
 export PATH
 
-# bug in Qt5 activate high dpi
-export QT_SCALE_FACTOR=1
-
 # fix ugly fonts in java swing
 # https://wiki.archlinux.org/index.php/Java_Runtime_Environment_fonts
 export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on"
@@ -54,4 +51,3 @@ if [ -n "$BASH_VERSION" ]; then
     . "$HOME/.bashrc"
   fi
 fi
-
