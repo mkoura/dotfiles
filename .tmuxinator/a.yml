@@ -1,6 +1,6 @@
-# ~/.tmuxinator/main.yml
+# ~/.tmuxinator/a.yml
 
-name: main
+name: a
 root: ~/
 
 # Optional tmux socket
@@ -25,7 +25,7 @@ startup_window: shell
 # attach: false
 
 # Runs after everything. Use it to attach to tmux with custom options etc.
-# post: tmux -CC attach -t main
+# post: tmux -CC attach -t a
 
 windows:
   - su: exec su -
