@@ -79,6 +79,7 @@ alias mux='tmuxinator'
 alias tmuxss='tmux split-window -d -h -p 38'
 alias sshnull='ssh -A -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 alias scpnull='scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+alias git='hub'
 
 # additional aliases
 [ -e ~/.bash_aliases ] && . ~/.bash_aliases
