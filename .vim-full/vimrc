@@ -26,35 +26,38 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " installed bundles
-Plugin 'airblade/vim-gitgutter'
-Plugin 'airblade/vim-rooter'
+" general
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'artnez/vim-wipeout'
 Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'danro/rename.vim'
-Plugin 'davidhalter/jedi-vim'
 Plugin 'godlygeek/tabular' " required for plasticboy/vim-markdown
-Plugin 'jpalardy/vim-slime'
 Plugin 'easymotion/vim-easymotion'
-Plugin 'luochen1990/rainbow'
-" Install: apt-get install exuberant-ctags (dnf install ctags)
-Plugin 'majutsushi/tagbar'
 Plugin 'plasticboy/vim-markdown'
 " Install: apt-get install silversearcher-ag (dnf install the_silver_searcher)
 Plugin 'rking/ag.vim'
+Plugin 'sjl/gundo.vim'
+Plugin 'tpope/vim-repeat'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+
+" coding
+Plugin 'davidhalter/jedi-vim'
+Plugin 'jpalardy/vim-slime'
+Plugin 'luochen1990/rainbow'
+" Install: apt-get install exuberant-ctags (dnf install ctags)
+Plugin 'majutsushi/tagbar'
 Plugin 'scrooloose/syntastic'
 Plugin 'Shougo/neocomplete.vim'
 Plugin 'Shougo/neosnippet.vim'
 Plugin 'Shougo/neosnippet-snippets'
-Plugin 'sjl/gundo.vim'
 Plugin 'tpope/vim-commentary'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-rhubarb'
 Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-vinegar'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+
+" VCS
+Plugin 'airblade/vim-gitgutter'
+Plugin 'airblade/vim-rooter'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-rhubarb'
 
 call vundle#end()
 filetype plugin indent on
@@ -199,7 +202,7 @@ let g:slime_python_ipython=1
 "
 set laststatus=2 " show statusline all the time
 let g:airline_theme='solarized' " make sure solarized is used
-let g:airline_powerline_fonts=1 " apt-get install fonts-powerline (dnf install powerline-fonts)
+let g:airline_powerline_fonts=1 " Install: apt-get install fonts-powerline (dnf install powerline-fonts)
 let g:airline_exclude_preview=1 " disble for preview windows
 let g:airline#extensions#tabline#enabled=1 " list of buffers
 let g:airline#extensions#tabline#fnamemod=':t' " show just the filename
@@ -229,6 +232,8 @@ let g:rainbow_conf={
 "
 " header folding level
 let g:vim_markdown_folding_level=4
+" disable conceal
+let g:vim_markdown_conceal=0
 
 
 "
@@ -360,6 +365,7 @@ augroup configgroup
   " skeletons
   au BufNewFile *.py 0r ~/.vim/templates/skeleton.py
 
+  " autocompletion
   au FileType css setlocal omnifunc=csscomplete#CompleteCSS
   au FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
   au FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
@@ -369,6 +375,10 @@ augroup configgroup
 
   " rainbow plugin - workaround to make it work with pangloss/vim-javascript
   "au FileType javascript syntax clear jsFuncBlock
+
+  " requires autopep8 command
+  " Install: dnf install python2-autopep8
+  au FileType python setlocal formatprg=autopep8\ -
 
   " vertical bar after 100th character
   au FileType c,cpp,go,python,sh,javascript,java,typescript,ruby setlocal colorcolumn=101
