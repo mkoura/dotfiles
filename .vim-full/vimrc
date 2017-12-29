@@ -8,17 +8,17 @@
 set nocompatible
 
 " remap <leader> to ,
-let mapleader=',' " remap <leader>
+let mapleader = ',' " remap <leader>
 
-let myhome=expand('~')
+let myhome = expand('~')
 if has('nvim')
-  let mybasedir=myhome . '/.local/share/nvim'
-  let myconfdir=myhome . '/.config/nvim'
-  let g:python_host_prog=myhome . '/.local/python_venvs/neovim2/bin/python2'
-  let g:python3_host_prog=myhome . '/.local/python_venvs/neovim3/bin/python3'
+  let mybasedir = myhome . '/.local/share/nvim'
+  let myconfdir = myhome . '/.config/nvim'
+  let g:python_host_prog = myhome . '/.local/python_venvs/neovim2/bin/python2'
+  let g:python3_host_prog = myhome . '/.local/python_venvs/neovim3/bin/python3'
 else
-  let mybasedir=myhome . '/.vim'
-  let myconfdir=myhome . '/.vim'
+  let mybasedir = myhome . '/.vim'
+  let myconfdir = myhome . '/.vim'
   " make sure python3 is initialized before python2
   if has('python3')
   endif
@@ -140,20 +140,20 @@ nnoremap <F2> :Explore<CR>
 " jedi-vim
 "
 " for use with deoplete/neocomplete
-let g:jedi#completions_enabled=0
-let g:jedi#auto_vim_configuration=0
-let g:jedi#smart_auto_mappings=0
+let g:jedi#completions_enabled = 0
+let g:jedi#auto_vim_configuration = 0
+let g:jedi#smart_auto_mappings = 0
 
 " display function call signatures in command line
 set noshowmode
-let g:jedi#show_call_signatures=2
+let g:jedi#show_call_signatures = 2
 
-let g:jedi#goto_command='<C-]>'
-let g:jedi#goto_assignments_command='<leader>jd'
-let g:jedi#goto_definitions_command=''
-let g:jedi#documentation_command='<leader>gd'
-let g:jedi#usages_command='<leader>jr'
-let g:jedi#rename_command='<leader>re'
+let g:jedi#goto_command = '<C-]>'
+let g:jedi#goto_assignments_command = '<leader>jd'
+let g:jedi#goto_definitions_command = ''
+let g:jedi#documentation_command = '<leader>gd'
+let g:jedi#usages_command = '<leader>jr'
+let g:jedi#rename_command = '<leader>re'
 
 
 "
@@ -171,56 +171,56 @@ if has('conceal')
 endif
 
 " user snippets
-let g:neosnippet#snippets_directory=myconfdir . '/snippets'
+let g:neosnippet#snippets_directory = myconfdir . '/snippets'
 
 
 "
 " CtrlP
 "
-let g:ctrlp_max_files=50000
-let g:ctrlp_user_command='ag %s -f -l --nocolor -g ""'
-let g:ctrlp_switch_buffer='Et'
+let g:ctrlp_max_files = 50000
+let g:ctrlp_user_command = 'ag %s -f -l --nocolor -g ""'
+let g:ctrlp_switch_buffer = 'Et'
 
 
 "
 " vim-slime
 "
-let g:slime_target='tmux'
-let g:slime_default_config={'socket_name': 'default', 'target_pane': ':.1'}
-let g:slime_python_ipython=1
+let g:slime_target = 'tmux'
+let g:slime_default_config = {'socket_name': 'default', 'target_pane': ':.1'}
+let g:slime_python_ipython = 1
 
 
 "
 " vim-airline
 "
 set laststatus=2 " show statusline all the time
-let g:airline_theme='solarized' " make sure solarized is used
-let g:airline_powerline_fonts=1 " Install: apt-get install fonts-powerline (dnf install powerline-fonts)
-let g:airline_exclude_preview=1 " disble for preview windows
-let g:airline#extensions#tabline#enabled=1 " list of buffers
-let g:airline#extensions#tabline#fnamemod=':t' " show just the filename
-let g:airline#extensions#tabline#tab_nr_type=1 " show tab numbers
+let g:airline_theme = 'solarized' " make sure solarized is used
+let g:airline_powerline_fonts = 1 " Install: apt-get install fonts-powerline (dnf install powerline-fonts)
+let g:airline_exclude_preview = 1 " disble for preview windows
+let g:airline#extensions#tabline#enabled = 1 " list of buffers
+let g:airline#extensions#tabline#fnamemod = ':t' " show just the filename
+let g:airline#extensions#tabline#tab_nr_type = 1 " show tab numbers
 
 
 "
 " vim-rooter
 "
-let g:rooter_use_lcd=1
-let g:rooter_silent_chdir=1
+let g:rooter_use_lcd = 1
+let g:rooter_silent_chdir = 1
 
 
 "
 " ale
 "
-let g:ale_python_flake8_args='--max-line-length=100'
+let g:ale_python_flake8_args = '--max-line-length = 100'
 
 
 "
 " Rainbow Parentheses Improved
 "
-let g:rainbow_active=1
+let g:rainbow_active = 1
 " solarized compatible colors
-let g:rainbow_conf={
+let g:rainbow_conf = {
   \   'ctermfgs': ['brown', 'Darkblue', 'darkgray', 'darkgreen'],
   \   'guifgs': ['RoyalBlue3', 'SeaGreen3', 'DarkOrchid3', 'firebrick3'],
   \}
@@ -230,9 +230,9 @@ let g:rainbow_conf={
 " vim-markdown
 "
 " header folding level
-let g:vim_markdown_folding_level=4
+let g:vim_markdown_folding_level = 4
 " disable conceal
-let g:vim_markdown_conceal=0
+let g:vim_markdown_conceal = 0
 
 
 "
@@ -245,23 +245,23 @@ if has('nvim')
   "
   " deoplete
   "
-  let g:deoplete#enable_at_startup=1
-  let g:deoplete#enable_smart_case=1
+  let g:deoplete#enable_at_startup = 1
+  let g:deoplete#enable_smart_case = 1
 
 else
 
   "
   " neocomplete
   "
-  let g:neocomplete#enable_at_startup=1
-  let g:neocomplete#enable_smart_case=1
-  let g:neocomplete#sources#syntax#min_keyword_length=3
+  let g:neocomplete#enable_at_startup = 1
+  let g:neocomplete#enable_smart_case = 1
+  let g:neocomplete#sources#syntax#min_keyword_length = 3
 
   if !exists('g:neocomplete#force_omni_input_patterns')
-    let g:neocomplete#force_omni_input_patterns={}
+    let g:neocomplete#force_omni_input_patterns = {}
   endif
-  let g:neocomplete#force_omni_input_patterns.python='\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
-  "let g:neocomplete#force_omni_input_patterns.ruby='[^. *\t]\.\w*\|\h\w*::'
+  let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
+  "let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
 
 endif
 
@@ -280,7 +280,7 @@ inoremap <expr><Up> pumvisible() ? "\<C-p>" : "\<Up>"
 " tmux-complete.vim
 "
 " no need for additional trigger when using neocomplete/deoplete
-let g:tmuxcomplete#trigger=''
+let g:tmuxcomplete#trigger = ''
 
  " }}}
 
@@ -312,8 +312,8 @@ endif
 
 " https://github.com/tpope/vim-sensible/blob/master/plugin/sensible.vim
 
-let &directory=mybasedir . '/swap//' " where to save swap files
-let &undodir=mybasedir . '/undo//'   " where to save undo histories
+let &directory = mybasedir . '/swap//' " where to save swap files
+let &undodir = mybasedir . '/undo//'   " where to save undo histories
 set undofile " persistent undo
 set undolevels=500  " maximum number of changes that can be undone
 set undoreload=5000 " maximum number lines to save for undo on a buffer reload
@@ -446,7 +446,7 @@ augroup configgroup
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
   " used for swapping to the last viewed tab - see Key mappings
-  au TabLeave * let g:lasttab=tabpagenr()
+  au TabLeave * let g:lasttab = tabpagenr()
 
   " Follow symlinks when opening a file {{{
   " NOTE: this happens with directory symlinks anyway (due to Vim's chdir/getcwd
@@ -478,7 +478,7 @@ augroup configgroup
     set shortmess+=A  " silence ATTENTION message about swap file (would get displayed twice)
     redraw  " Redraw now, to avoid hit-enter prompt.
     exe 'file ' . resolvedfile
-    let &shm=sshm
+    let &shm = sshm
 
     unlet! b:git_dir
     call fugitive#detect(resolvedfile)
@@ -525,7 +525,7 @@ vnoremap <M-k> :m '<-2<CR>gv=gv
 
 " swap to the last viewed tab
 " http://stackoverflow.com/questions/2119754/switch-to-last-active-tab-in-vim
-let g:lasttab=1
+let g:lasttab = 1
 nmap <M-t><M-t> :exe 'tabn '.g:lasttab<CR>
 imap <M-t><M-t> <ESC>:exe 'tabn '.g:lasttab<CR>
 
