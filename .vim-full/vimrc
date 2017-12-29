@@ -10,76 +10,101 @@ set nocompatible
 " remap <leader> to ,
 let mapleader=',' " remap <leader>
 
+let myhome=expand('~')
+if has('nvim')
+  let mybasedir=myhome . '/.local/share/nvim'
+  let myconfdir=myhome . '/.config/nvim'
+  let g:python_host_prog=myhome . '/.local/python_venvs/neovim2/bin/python2'
+  let g:python3_host_prog=myhome . '/.local/python_venvs/neovim3/bin/python3'
+else
+  let mybasedir=myhome . '/.vim'
+  let myconfdir=myhome . '/.vim'
+  " make sure python3 is initialized before python2
+  if has('python3')
+  endif
+endif
+
 " }}}
 
 
 " Plugins {{{
 
-" Install: git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+" Install:
+" curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+"   https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 "
-filetype off
-
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+call plug#begin(mybasedir . '/plugged')
 
 " installed bundles
 " general
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'artnez/vim-wipeout'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'godlygeek/tabular' " required for plasticboy/vim-markdown
-Plugin 'easymotion/vim-easymotion'
-Plugin 'plasticboy/vim-markdown'
+Plug 'altercation/vim-colors-solarized'
+Plug 'artnez/vim-wipeout'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'godlygeek/tabular' " required by plasticboy/vim-markdown
+Plug 'easymotion/vim-easymotion'
+Plug 'plasticboy/vim-markdown'
 " Install: apt-get install silversearcher-ag (dnf install the_silver_searcher)
-Plugin 'rking/ag.vim'
-Plugin 'sjl/gundo.vim'
-Plugin 'tpope/vim-repeat'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+Plug 'rking/ag.vim'
+Plug 'sjl/gundo.vim'
+Plug 'tpope/vim-repeat'
+"Plug 'tpope/vim-vinegar'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'wellle/tmux-complete.vim' " depends on neocomplete/deoplete
 
 " coding
-Plugin 'davidhalter/jedi-vim'
-Plugin 'jpalardy/vim-slime'
-Plugin 'luochen1990/rainbow'
+Plug 'chrisbra/NrrwRgn'
+Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+Plug 'jpalardy/vim-slime'
+Plug 'luochen1990/rainbow'
 " Install: apt-get install exuberant-ctags (dnf install ctags)
-Plugin 'majutsushi/tagbar'
-Plugin 'scrooloose/syntastic'
-Plugin 'Shougo/neocomplete.vim'
-Plugin 'Shougo/neosnippet.vim'
-Plugin 'Shougo/neosnippet-snippets'
-Plugin 'tpope/vim-commentary'
-Plugin 'tpope/vim-surround'
+Plug 'majutsushi/tagbar'
+Plug 'pangloss/vim-javascript'
+Plug 'Shougo/neosnippet.vim' | Plug 'Shougo/neosnippet-snippets'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+Plug 'w0rp/ale'
 
 " VCS
-Plugin 'airblade/vim-gitgutter'
-Plugin 'airblade/vim-rooter'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-rhubarb'
+Plug 'airblade/vim-gitgutter'
+Plug 'airblade/vim-rooter'
+Plug 'tpope/vim-fugitive' | Plug 'tpope/vim-rhubarb'
 
-call vundle#end()
-filetype plugin indent on
+" vim/neovim plugins
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  " javascript for deoplete
+  " Install: npm install flow-bin
+  Plug 'wokalski/autocomplete-flow', { 'for': 'javascript' }
+  " python for deoplete
+  Plug 'zchee/deoplete-jedi', { 'for': 'python' }
+else
+  Plug 'Shougo/neocomplete.vim'
+endif
+
+" Initialize plugin system
+call plug#end()
 
 " }}}
 
 
-" Plugins config {{{
+"  Plugins config {{{
 
 
 "
 " Python with virtualenv support
 "
-if ! has('gui_running')
-py << EOF
+if !(has('gui_running') || has('nvim'))
+py3 << EOF
 import os
 import sys
 if 'VIRTUAL_ENV' in os.environ:
   project_base_dir = os.environ['VIRTUAL_ENV']
   activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
   try:
-    execfile(activate_this, dict(__file__=activate_this))
+    # execfile(activate_this, dict(__file__=activate_this))
+    with open(activate_this) as f:
+      exec(f.read(), dict(__file__=activate_this))
   except IOError:
     pass
 EOF
@@ -114,7 +139,7 @@ nnoremap <F2> :Explore<CR>
 "
 " jedi-vim
 "
-" for use with neocomplete
+" for use with deoplete/neocomplete
 let g:jedi#completions_enabled=0
 let g:jedi#auto_vim_configuration=0
 let g:jedi#smart_auto_mappings=0
@@ -132,35 +157,11 @@ let g:jedi#rename_command='<leader>re'
 
 
 "
-" neocomplete
-"
-let g:neocomplete#enable_at_startup=1
-let g:neocomplete#enable_smart_case=1
-let g:neocomplete#sources#syntax#min_keyword_length=3
-
-" <TAB>: completion.
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-" <Up>, <Down>" : completion.
-inoremap <expr><Down> pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr><Up> pumvisible() ? "\<C-p>" : "\<Up>"
-
-if !exists('g:neocomplete#force_omni_input_patterns')
-  let g:neocomplete#force_omni_input_patterns={}
-endif
-let g:neocomplete#force_omni_input_patterns.python='\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
-"let g:neocomplete#force_omni_input_patterns.ruby='[^. *\t]\.\w*\|\h\w*::'
-
-
-"
 " neosnippet
 "
 " SuperTab like snippets behavior.
 " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
 imap <C-j> <Plug>(neosnippet_expand_or_jump)
-"imap <expr><TAB>
-" \ pumvisible() ? "\<C-n>" :
-" \ neosnippet#expandable_or_jumpable() ?
-" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
@@ -169,6 +170,9 @@ if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
 
+" user snippets
+let g:neosnippet#snippets_directory=myconfdir . '/snippets'
+
 
 "
 " CtrlP
@@ -176,17 +180,6 @@ endif
 let g:ctrlp_max_files=50000
 let g:ctrlp_user_command='ag %s -f -l --nocolor -g ""'
 let g:ctrlp_switch_buffer='Et'
-
-
-"
-" Syntastic
-"
-let g:syntastic_python_flake8_args='--max-line-length=100'
-let g:syntastic_python_checkers=['pylint', 'flake8']
-let g:syntastic_go_checkers=['gofmt', 'govet']
-let g:syntastic_mode_map={ 'mode': 'active', 'passive_filetypes': ['java', 'markdown'] }
-" to be able to use :lnext and :lprev
-let g:syntastic_always_populate_loc_list=1
 
 
 "
@@ -217,6 +210,12 @@ let g:rooter_silent_chdir=1
 
 
 "
+" ale
+"
+let g:ale_python_flake8_args='--max-line-length=100'
+
+
+"
 " Rainbow Parentheses Improved
 "
 let g:rainbow_active=1
@@ -241,7 +240,49 @@ let g:vim_markdown_conceal=0
 "
 runtime macros/matchit.vim
 
-" }}}
+
+if has('nvim')
+  "
+  " deoplete
+  "
+  let g:deoplete#enable_at_startup=1
+  let g:deoplete#enable_smart_case=1
+
+else
+
+  "
+  " neocomplete
+  "
+  let g:neocomplete#enable_at_startup=1
+  let g:neocomplete#enable_smart_case=1
+  let g:neocomplete#sources#syntax#min_keyword_length=3
+
+  if !exists('g:neocomplete#force_omni_input_patterns')
+    let g:neocomplete#force_omni_input_patterns={}
+  endif
+  let g:neocomplete#force_omni_input_patterns.python='\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
+  "let g:neocomplete#force_omni_input_patterns.ruby='[^. *\t]\.\w*\|\h\w*::'
+
+endif
+
+
+"
+" deoplete/neocomplete
+"
+" <TAB>: completion.
+inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+" <Up>, <Down>" : completion.
+inoremap <expr><Down> pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr><Up> pumvisible() ? "\<C-p>" : "\<Up>"
+
+
+"
+" tmux-complete.vim
+"
+" no need for additional trigger when using neocomplete/deoplete
+let g:tmuxcomplete#trigger=''
+
+ " }}}
 
 
 " Colors {{{
@@ -271,8 +312,8 @@ endif
 
 " https://github.com/tpope/vim-sensible/blob/master/plugin/sensible.vim
 
-set directory=~/.vim/swap// " where to save swap files
-set undodir=~/.vim/undo//   " where to save undo histories
+let &directory=mybasedir . '/swap//' " where to save swap files
+let &undodir=mybasedir . '/undo//'   " where to save undo histories
 set undofile " persistent undo
 set undolevels=500  " maximum number of changes that can be undone
 set undoreload=5000 " maximum number lines to save for undo on a buffer reload
@@ -296,8 +337,7 @@ set autoindent " copy indent from current line when starting a new line
 set smarttab " insert configured number of blanks on <Tab>
 set ruler " show the line and column number of the cursor position
 set autoread " automatically read again changed files
-set ttimeout " time out on key codes
-set ttimeoutlen=800
+set timeoutlen=800 " mapping delays
 set tabpagemax=50 " maximum number of tab pages
 set display+=lastline " display as much as possible of the last line
 set formatoptions+=j " delete comment character when joining commented lines
@@ -362,23 +402,29 @@ command! -nargs=* -complete=shellcmd R  tabnew<Bar>setlocal buftype=nofile bufhi
 augroup configgroup
   autocmd!
 
-  " skeletons
-  au BufNewFile *.py 0r ~/.vim/templates/skeleton.py
-
   " autocompletion
   au FileType css setlocal omnifunc=csscomplete#CompleteCSS
   au FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-  au FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-  au FileType python setlocal omnifunc=jedi#completions
   "au FileType ruby setlocal omnifunc=rubycomplete#Complete
   au FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
+  if !has('nvim')
+    " use deoplete-jedi in nvim instead
+    au FileType python setlocal omnifunc=jedi#completions
+    " use autocomplete-flow in nvim instead
+    au FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  endif
+
   " rainbow plugin - workaround to make it work with pangloss/vim-javascript
-  "au FileType javascript syntax clear jsFuncBlock
+  au FileType javascript syntax clear jsFuncBlock
 
   " requires autopep8 command
   " Install: dnf install python2-autopep8
-  au FileType python setlocal formatprg=autopep8\ -
+  au FileType python setlocal formatprg=autopep8\ --max-line-length\ 100\ -
+
+  " requires prettier command
+  " Install: npm install prettier
+  au FileType javascript setlocal formatprg=prettier\ --stdin
 
   " vertical bar after 100th character
   au FileType c,cpp,go,python,sh,javascript,java,typescript,ruby setlocal colorcolumn=101
@@ -457,7 +503,7 @@ augroup END
 
 " fix Alt key in console
 " for mapped keys
-if ! has('gui_running')
+if !(has('gui_running') || has('nvim'))
   set <M-h>=h
   set <M-j>=j
   set <M-k>=k

@@ -85,7 +85,9 @@ alias git='hub'
 [ -e ~/.bash_aliases ] && . ~/.bash_aliases
 
 # editor settings
-if hash vimx 2>/dev/null; then
+if hash nvim 2>/dev/null; then
+  export EDITOR=nvim
+elif hash vimx 2>/dev/null; then
   export EDITOR=vimx
 elif hash vim 2>/dev/null; then
   export EDITOR=vim
