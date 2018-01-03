@@ -8,8 +8,9 @@
 set nocompatible
 
 " remap <leader> to ,
-let mapleader = ',' " remap <leader>
+let mapleader = ','
 
+" vim/nvim differences
 let myhome = expand('~')
 if has('nvim')
   let mybasedir = myhome . '/.local/share/nvim'
@@ -63,8 +64,10 @@ Plug 'wellle/tmux-complete.vim' " depends on neocomplete/deoplete
 Plug 'chrisbra/NrrwRgn'
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 Plug 'jpalardy/vim-slime'
-Plug 'luochen1990/rainbow'
 " Install: apt-get install exuberant-ctags (dnf install ctags)
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'luochen1990/rainbow'
+" requires exuberant-ctags
 Plug 'majutsushi/tagbar'
 " javascript-related post-install actions go here
 Plug 'pangloss/vim-javascript', { 'do': 'npm install prettier' }
@@ -183,9 +186,10 @@ let g:neosnippet#snippets_directory = myconfdir . '/snippets'
 "
 " CtrlP
 "
+let g:ctrlp_match_window = 'results:100' " overcome limit imposed by max height
 let g:ctrlp_max_files = 50000
-let g:ctrlp_user_command = 'ag %s -f -l --nocolor -g ""'
 let g:ctrlp_switch_buffer = 'Et'
+let g:ctrlp_user_command = 'ag %s -f -l --nocolor -g ""'
 
 
 "
@@ -216,9 +220,16 @@ let g:rooter_silent_chdir = 1
 
 
 "
-" ale
+" ALE
 "
-let g:ale_python_flake8_args = '--max-line-length = 100'
+" leave the gutter always open
+let g:ale_sign_column_always = 1
+" airline integration
+let g:airline#extensions#ale#enabled = 1
+" increase delay after which the linters will be run
+let g:ale_lint_delay = 500
+" flake8 args
+let g:ale_python_flake8_args = '--max-line-length=100'
 
 
 "
@@ -313,10 +324,6 @@ command! Bgdark :set background=dark
 
 
 let &directory = mybasedir . '/swap//' " where to save swap files
-let &undodir = mybasedir . '/undo//'   " where to save undo histories
-set undofile " persistent undo
-set undolevels=500  " maximum number of changes that can be undone
-set undoreload=5000 " maximum number lines to save for undo on a buffer reload
 set history=1000 " mum of entries remembered for ':' commands and search patterns
 set cursorline " highlight line with cursor
 set showcmd " show that vim is waiting for key
@@ -331,8 +338,6 @@ set pastetoggle=<leader>pt " pastetoggle (sane indentation on pastes)
 set switchbuf=split " use new split
 set lazyredraw " redraw only when we need to
 "set completeopt-=preview " turn off the preview window
-set autoindent " copy indent from current line when starting a new line
-set smarttab " insert configured number of blanks on <Tab>
 set ruler " show the line and column number of the cursor position
 set autoread " automatically read again changed files
 set timeoutlen=800 " mapping delays
@@ -341,6 +346,16 @@ set display+=lastline " display as much as possible of the last line
 set formatoptions+=j " delete comment character when joining commented lines
 set nrformats-=octal " numbers starting with zero will NOT be considered octal
 set wmh=0 " don't show one line of minimized split
+
+" undo
+let &undodir = mybasedir . '/undo//'   " where to save undo histories
+set undofile " persistent undo
+set undolevels=500  " maximum number of changes that can be undone
+set undoreload=5000 " maximum number lines to save for undo on a buffer reload
+
+" indentation
+set autoindent " copy indent from current line when starting a new line
+set smarttab " insert configured number of blanks on <Tab>
 set tabstop=4 shiftwidth=4 softtabstop=4 expandtab " use spaces instead of tabs
 
 " search
