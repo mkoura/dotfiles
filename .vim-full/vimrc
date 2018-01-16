@@ -48,15 +48,16 @@ call plug#begin(mybasedir . '/plugged')
 " general
 Plug 'altercation/vim-colors-solarized'
 Plug 'artnez/vim-wipeout'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'godlygeek/tabular' " required by plasticboy/vim-markdown
 Plug 'easymotion/vim-easymotion'
+" Install:
+" dnf install the_silver_searcher Debian: the_silver_searcher)
+" dnf install fzf
+Plug 'junegunn/fzf.vim'
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
-" Install: apt-get install silversearcher-ag (dnf install the_silver_searcher)
-Plug 'rking/ag.vim'
 Plug 'sjl/gundo.vim'
 Plug 'tpope/vim-repeat'
-"Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-vinegar'
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 Plug 'wellle/tmux-complete.vim' " depends on neocomplete/deoplete
 
@@ -121,6 +122,30 @@ endif
 
 
 "
+" Ag/grep
+"
+"nnoremap <leader>gr :split<CR>:Ag '\b<cword>\b'<CR>
+nnoremap <leader>gr :grep! '\b<cword>\b'<CR>:cw<CR>
+" use ag over grep
+if executable('ag')
+  set grepprg=ag\ --nogroup\ --nocolor\ --vimgrep
+  set grepformat^=%f:%l:%c:%m " file:line:column:message
+endif
+
+
+"
+" netrw
+"
+nnoremap <F2> :Explore<CR>
+
+
+"
+" matchit
+"
+runtime macros/matchit.vim
+
+
+"
 " Gundo
 "
 nnoremap <F4> :GundoToggle<CR>
@@ -133,16 +158,9 @@ nnoremap <F8> :TagbarToggle<CR>
 
 
 "
-" Ag
+" fzf
 "
-"nnoremap <leader>gr :split<CR>:Ag '\b<cword>\b'<CR>
-nnoremap <leader>gr :Ag '\b<cword>\b'<CR>
-
-
-"
-" netrw
-"
-nnoremap <F2> :Explore<CR>
+nnoremap <C-t> :Files<CR>
 
 
 "
@@ -184,15 +202,6 @@ let g:neosnippet#snippets_directory = myconfdir . '/snippets'
 
 
 "
-" CtrlP
-"
-let g:ctrlp_match_window = 'results:100' " overcome limit imposed by max height
-let g:ctrlp_max_files = 50000
-let g:ctrlp_switch_buffer = 'Et'
-let g:ctrlp_user_command = 'ag %s -f -l --nocolor -g ""'
-
-
-"
 " vim-slime
 "
 let g:slime_target = 'tmux'
@@ -205,7 +214,7 @@ let g:slime_python_ipython = 1
 "
 set laststatus=2 " show statusline all the time
 let g:airline_theme = 'solarized' " make sure solarized is used
-let g:airline_powerline_fonts = 1 " Install: apt-get install fonts-powerline (dnf install powerline-fonts)
+let g:airline_powerline_fonts = 1 " Install: dnf install powerline-fonts (Debian: fonts-powerline)
 let g:airline_exclude_preview = 1 " disble for preview windows
 let g:airline#extensions#tabline#enabled = 1 " list of buffers
 let g:airline#extensions#tabline#fnamemod = ':t' " show just the filename
@@ -250,12 +259,6 @@ let g:rainbow_conf = {
 let g:vim_markdown_folding_level = 4
 " disable conceal
 let g:vim_markdown_conceal = 0
-
-
-"
-" matchit
-"
-runtime macros/matchit.vim
 
 
 if has('nvim')
@@ -465,6 +468,11 @@ augroup configgroup
   let g:lasttab = 1
   nmap <M-t><M-t> :exe 'tabn '.g:lasttab<CR>
   imap <M-t><M-t> <ESC>:exe 'tabn '.g:lasttab<CR>
+
+  " open the location/quickfix window after :make, :grep, :lvimgrep and friends
+  " if there are valid locations/errors
+  au QuickFixCmdPost [^l]* cwindow
+  au QuickFixCmdPost l*    lwindow
 
 
   " Follow symlinks when opening a file {{{

@@ -96,3 +96,12 @@ else
 fi
 alias vim="$EDITOR"
 export VISUAL="$EDITOR"
+
+# fzf support
+if hash fzf 2>/dev/null; then
+  FZF_KEY=/usr/share/fzf/shell/key-bindings.bash
+  [ -e "$FZF_KEY" ] && . "$FZF_KEY"
+  unset FZF_KEY
+  export FZF_DEFAULT_COMMAND='ag -l -f -g ""'
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+fi
