@@ -81,6 +81,18 @@ alias sshnull='ssh -A -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=n
 alias scpnull='scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 alias git='hub'
 
+pushd() {
+  if [ "$#" -eq 0 ]; then
+    DIR="${HOME}"
+  else
+    DIR="$1"
+  fi
+
+  builtin pushd "${DIR}" > /dev/null
+  echo -n "DIRSTACK: "
+  dirs
+}
+
 # additional aliases
 [ -e ~/.bash_aliases ] && . ~/.bash_aliases
 
@@ -102,6 +114,6 @@ if hash fzf 2>/dev/null; then
   FZF_KEY=/usr/share/fzf/shell/key-bindings.bash
   [ -e "$FZF_KEY" ] && . "$FZF_KEY"
   unset FZF_KEY
-  export FZF_DEFAULT_COMMAND='ag -l -f -g ""'
+  export FZF_DEFAULT_COMMAND='ag -l -f --ignore tags -g ""'
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 fi
