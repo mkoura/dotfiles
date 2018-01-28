@@ -7,8 +7,9 @@
 
 set nocompatible
 
-" remap <leader> to ,
+" remap <leader> and <localleader> to ,
 let mapleader = ','
+let maplocalleader = ','
 
 " vim/nvim differences
 let myhome = expand('~')
@@ -51,7 +52,7 @@ Plug 'artnez/vim-wipeout'
 Plug 'godlygeek/tabular' " required by plasticboy/vim-markdown
 Plug 'easymotion/vim-easymotion'
 " Install:
-" dnf install the_silver_searcher Debian: the_silver_searcher)
+" dnf install the_silver_searcher (Debian: silversearcher-ag)
 " dnf install fzf
 Plug 'junegunn/fzf.vim'
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
@@ -93,7 +94,7 @@ else
   Plug 'Shougo/neocomplete.vim'
 endif
 
-" Initialize plugin system
+" initialize plugin system
 call plug#end()
 
 " }}}
@@ -124,8 +125,6 @@ endif
 "
 " Ag/grep
 "
-"nnoremap <leader>gr :split<CR>:Ag '\b<cword>\b'<CR>
-nnoremap <leader>gr :grep! '\b<cword>\b'<CR>:cw<CR>
 " use ag over grep
 if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor\ --vimgrep
@@ -161,6 +160,11 @@ nnoremap <F8> :TagbarToggle<CR>
 " fzf
 "
 nnoremap <C-t> :Files<CR>
+nnoremap <leader>ww :Windows<CR>
+" display all lines with keyword under cursor
+nnoremap <leader>ff :BLines <C-r><C-w><CR>
+" search for word under cursor
+nnoremap <leader>gr :Ag <C-r><C-w><CR>
 
 
 "
@@ -176,10 +180,10 @@ set noshowmode
 let g:jedi#show_call_signatures = 2
 
 let g:jedi#goto_command = '<C-]>'
-let g:jedi#goto_assignments_command = '<leader>jd'
-let g:jedi#goto_definitions_command = ''
+let g:jedi#goto_assignments_command = '<leader>ja'
+let g:jedi#goto_definitions_command = '<leader>jd'
 let g:jedi#documentation_command = '<leader>gd'
-let g:jedi#usages_command = '<leader>jr'
+let g:jedi#usages_command = '<leader>uu'
 let g:jedi#rename_command = '<leader>re'
 
 
@@ -192,7 +196,7 @@ imap <C-j> <Plug>(neosnippet_expand_or_jump)
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
   \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
-" For conceal markers.
+" conceal markers
 if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
@@ -207,6 +211,9 @@ let g:neosnippet#snippets_directory = myconfdir . '/snippets'
 let g:slime_target = 'tmux'
 let g:slime_default_config = {'socket_name': 'default', 'target_pane': ':.1'}
 let g:slime_python_ipython = 1
+
+" send word under the cursor
+nnoremap <leader>rr :SlimeSend1 <C-r><C-w><CR>
 
 
 "
@@ -229,7 +236,7 @@ let g:rooter_silent_chdir = 1
 
 
 "
-" ALE
+" ale
 "
 " leave the gutter always open
 let g:ale_sign_column_always = 1
@@ -242,7 +249,7 @@ let g:ale_python_flake8_args = '--max-line-length=100'
 
 
 "
-" Rainbow Parentheses Improved
+" rainbow (Rainbow Parentheses Improved)
 "
 let g:rainbow_active = 1
 " solarized compatible colors
@@ -255,8 +262,8 @@ let g:rainbow_conf = {
 "
 " vim-markdown
 "
-" header folding level
-let g:vim_markdown_folding_level = 4
+" fold in a style like python-mode
+let g:vim_markdown_folding_style_pythonic = 1
 " disable conceal
 let g:vim_markdown_conceal = 0
 
@@ -267,6 +274,8 @@ if has('nvim')
   "
   let g:deoplete#enable_at_startup = 1
   let g:deoplete#enable_smart_case = 1
+  " change the source rank
+  call deoplete#custom#set('jedi', 'rank', 9999)
 
 else
 
@@ -337,7 +346,6 @@ set backspace=indent,eol,start " backspace for dummies
 "set mouse=a " enable mouse for all modes
 set hidden " switch files without saving them first
 set clipboard=unnamedplus " use + register for copy-paste
-set pastetoggle=<leader>pt " pastetoggle (sane indentation on pastes)
 set switchbuf=split " use new split
 set lazyredraw " redraw only when we need to
 "set completeopt-=preview " turn off the preview window
@@ -558,6 +566,9 @@ nmap <M-t><M-h> :tabm -1<CR>
 " new tab
 nnoremap <leader>tt :$tabnew<CR>
 
+" sane indentation on paste
+noremap <leader>pt :set invpaste<CR>
+
 " visual shifting (does not exit Visual mode)
 vnoremap < <gv
 vnoremap > >gv
@@ -582,9 +593,6 @@ vnoremap . :normal .<CR>
 " recoverable undo
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
-
-" display all lines with keyword under cursor and ask which one to jump to
-nmap <Leader>ff [I:let nr = input('Which one: ')<Bar>exe 'normal ' . nr .'[\t'<CR>
 
 " for when you forget to sudo.. Really Write the file.
 cmap w!! w !sudo tee % >/dev/null
