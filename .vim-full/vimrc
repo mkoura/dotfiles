@@ -162,7 +162,7 @@ nnoremap <F8> :TagbarToggle<CR>
 nnoremap <C-t> :Files<CR>
 nnoremap <leader>ww :Windows<CR>
 " display all lines with keyword under cursor
-nnoremap <leader>ff :BLines <C-r><C-w><CR>
+nnoremap <leader>ff :BLines '<C-r><C-w><CR>
 " search for word under cursor
 nnoremap <leader>gr :Ag <C-r><C-w><CR>
 
