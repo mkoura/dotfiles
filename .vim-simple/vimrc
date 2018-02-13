@@ -7,18 +7,9 @@
 
 set nocompatible
 
-" remap <leader> to ,
-let mapleader=',' " remap <leader>
-
-"
-" matchit
-"
-runtime macros/matchit.vim
-
-" }}}
-
-
-" Colors {{{
+" remap <leader> and <localleader> to ,
+let mapleader = ','
+let maplocalleader = ','
 
 " highlight extra whitespace
 " MUST be inserted BEFORE the colorscheme command
@@ -28,6 +19,37 @@ augroup colorsgrp
   au InsertLeave * match ExtraWhitespace /\s\+$/
 augroup END
 
+
+"
+" Ag/grep
+"
+" use ag over grep
+if executable('ag')
+  set grepprg=ag\ --nogroup\ --nocolor\ --vimgrep
+  set grepformat^=%f:%l:%c:%m " file:line:column:message
+endif
+
+
+"
+" netrw
+"
+nnoremap <F2> :Explore<CR>
+
+
+"
+" matchit
+"
+runtime macros/matchit.vim
+
+" }}}
+
+
+" Sets {{{
+" https://github.com/tpope/vim-sensible/blob/master/plugin/sensible.vim
+
+"
+" colors
+"
 syntax enable
 if &term=~'linux'
   set background=dark
@@ -38,10 +60,9 @@ else
   colorscheme solarized
 endif
 
-" }}}
-
-
-" Sets {{{
+" background settings
+command! Bglight :set background=light
+command! Bgdark :set background=dark
 
 set history=1000 " mum of entries remembered for ':' commands and search patterns
 set cursorline " highlight line with cursor
@@ -49,35 +70,41 @@ set showcmd " show that vim is waiting for key
 set scrolloff=3 " min number of lines to keep above and below the cursor
 set sidescrolloff=5 " min number of columns to keep to sides
 set backspace=indent,eol,start " backspace for dummies
-set number " line numbers on
-set incsearch " search as characters are entered
-set hlsearch " highlight search terms
-"set mouse=a " set mouse=a
-"set hidden " switch files without saving them first
+"set number relativenumber  " relative line numbers
+"set mouse=a " enable mouse for all modes
+set hidden " switch files without saving them first
 set clipboard=unnamedplus " use + register for copy-paste
-set pastetoggle=<leader>pt " pastetoggle (sane indentation on pastes)
-set switchbuf+=usetab,newtab " switch to existing tab or use new tab
+set switchbuf=split " use new split
 set lazyredraw " redraw only when we need to
-set completeopt-=preview " turn off the preview window
-set autoindent " copy indent from current line when starting a new line
-set smarttab " insert configured number of blanks on <Tab>
+"set completeopt-=preview " turn off the preview window
 set ruler " show the line and column number of the cursor position
 set autoread " automatically read again changed files
-set ttimeout " time out on key codes
-set ttimeoutlen=100
+set timeoutlen=800 " mapping delays
 set tabpagemax=50 " maximum number of tab pages
 set display+=lastline " display as much as possible of the last line
 set formatoptions+=j " delete comment character when joining commented lines
 set nrformats-=octal " numbers starting with zero will NOT be considered octal
+set wmh=0 " don't show one line of minimized split
 
-if &listchars ==# 'eol:$'
-  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+" indentation
+set autoindent " copy indent from current line when starting a new line
+set smarttab " insert configured number of blanks on <Tab>
+set tabstop=4 shiftwidth=4 softtabstop=4 expandtab " use spaces instead of tabs
+
+" search
+set incsearch " search as characters are entered
+set hlsearch " highlight search terms
+" use <C-L> to clear the highlighting of :set hlsearch.
+if maparg('<C-L>', 'n') ==# ''
+  nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 endif
 
+" don't look any further for tags if ./tags is present
 if has('path_extra')
   setglobal tags-=./tags tags-=./tags; tags^=./tags;
 endif
 
+" create viminfo if missing
 if !empty(&viminfo)
   set viminfo^=!
 endif
@@ -107,35 +134,52 @@ set ssop-=folds   " do not store folds
 " Rmw = remove trailing whitespaces and ^M chars
 command! Rmw %s/\s\+$//e
 
-" background settings
-command! Bglight :set background=light
-command! Bgdark :set background=dark
-
+" spellchecking in current buffer
+command! SpellEN :setlocal spell spelllang=en_us
+command! SpellOff :setlocal nospell
 
 " R = command output in new tab
-command! -nargs=* -complete=shellcmd Rr tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | 0r !<args>
-command! -nargs=* -complete=shellcmd R  tabnew | setlocal buftype=nofile bufhidden=hide noswapfile nowrap | execute '0r !<args>' | filetype detect
+command! -nargs=* -complete=shellcmd Rr tabnew<Bar>setlocal buftype=nofile bufhidden=hide noswapfile nowrap<Bar>0r !<args>
+command! -nargs=* -complete=shellcmd R  tabnew<Bar>setlocal buftype=nofile bufhidden=hide noswapfile nowrap<Bar>exe '0r !<args>'<Bar>filetype detect
 
 " }}}
 
 
- " Autocommands {{{
+" Autocommands {{{
 
 augroup configgroup
   autocmd!
 
   " vertical bar after 100th character
-  au FileType c,cpp,go,python,sh,javascript,java setlocal colorcolumn=101
+  au FileType c,cpp,go,python,sh,javascript,java,typescript,ruby setlocal colorcolumn=101
 
   " indentation
-  au FileType c,cpp,go,ant,xml,html,python,tex setlocal expandtab shiftround tabstop=4 shiftwidth=4 softtabstop=4
-  au FileType sh,javascript,java,vim setlocal expandtab shiftround tabstop=2 shiftwidth=2 softtabstop=2
+  au FileType make setlocal noexpandtab " use real tabs for Makefiles
+  au FileType sh,vim,ruby setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+
+  " override 'switchbuf' for quickfix windows
+  au FileType qf setlocal switchbuf=useopen
+
+  " word wrapping for text files
+  au FileType txt,markdown,tex setlocal wrap linebreak nolist textwidth=0 wrapmargin=0
+
+  " don't conceal quotes in JSON
+  au FileType json setlocal conceallevel=0
 
   " restore last position in file when reopened
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-  " used for swapping to the last viewed tab - see shortcuts
-  au TabLeave * let g:lasttab=tabpagenr()
+  " swap to the last viewed tab
+  " http://stackoverflow.com/questions/2119754/switch-to-last-active-tab-in-vim
+  au TabLeave * let g:lasttab = tabpagenr()
+  let g:lasttab = 1
+  nmap <M-t><M-t> :exe 'tabn '.g:lasttab<CR>
+  imap <M-t><M-t> <ESC>:exe 'tabn '.g:lasttab<CR>
+
+  " open the location/quickfix window after :make, :grep, :lvimgrep and friends
+  " if there are valid locations/errors
+  au QuickFixCmdPost [^l]* cwindow
+  au QuickFixCmdPost l*    lwindow
 augroup END
 
 " }}}
@@ -153,32 +197,38 @@ if ! has("gui_running")
   set <M-t>=t
 endif
 
-" swap to the last viewed tab
-" http://stackoverflow.com/questions/2119754/switch-to-last-active-tab-in-vim
-let g:lasttab=1
-nmap <M-t><M-t> :exe "tabn ".g:lasttab<CR>
+" split navigations
+nnoremap <M-j> <C-W><C-J>
+nnoremap <M-k> <C-W><C-K>
+nnoremap <M-l> <C-W><C-L>
+nnoremap <M-h> <C-W><C-H>
+
+" moving lines up and down
+inoremap <M-j> <Esc>:m .+1<CR>==gi
+inoremap <M-k> <Esc>:m .-2<CR>==gi
+vnoremap <M-j> :m '>+1<CR>gv=gv
+vnoremap <M-k> :m '<-2<CR>gv=gv
 
 " move tab to right
 nmap <M-t><M-l> :tabm +1<CR>
 " move tab to left
 nmap <M-t><M-h> :tabm -1<CR>
 
-" moving lines up and down
-nnoremap <M-j> :m .+1<CR>==
-nnoremap <M-k> :m .-2<CR>==
-inoremap <M-j> <Esc>:m .+1<CR>==gi
-inoremap <M-k> <Esc>:m .-2<CR>==gi
-vnoremap <M-j> :m '>+1<CR>gv=gv
-vnoremap <M-k> :m '<-2<CR>gv=gv
+" new tab
+nnoremap <leader>tt :$tabnew<CR>
+
+" sane indentation on paste
+noremap <leader>pt :set invpaste<CR>
 
 " visual shifting (does not exit Visual mode)
 vnoremap < <gv
 vnoremap > >gv
 
-" use <C-L> to clear the highlighting of :set hlsearch.
-if maparg('<C-L>', 'n') ==# ''
-  nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
-endif
+" search for visually selected text
+vnoremap // y/<C-R>"<CR>
+
+" highlight word without jumping
+nnoremap * *``
 
 " move vertically by visual line
 nnoremap j gj
