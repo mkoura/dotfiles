@@ -29,7 +29,7 @@ startup_window: shell1
 # post: tmux -CC attach -t cfme2
 
 windows:
-  - sel: python scripts/dockerbot/sel_container.py --watch --webdriver 4445 --vnc 5901
+  - sel: python cfme/utils/dockerbot/sel_container.py --watch --webdriver 4445 --vnc 5901
   - log: tail -f log/cfme.log
   - shell1:
     - tmux set-window-option -t2 automatic-rename on

@@ -28,7 +28,7 @@ startup_window: editor
 # post: tmux -CC attach -t cfme
 
 windows:
-  - sel: python scripts/dockerbot/sel_container.py --watch --webdriver 4444
+  - sel: python cfme/utils/dockerbot/sel_container.py --watch --webdriver 4444
   - log: tail -f log/cfme.log
   - editor:
     - tmuxss
