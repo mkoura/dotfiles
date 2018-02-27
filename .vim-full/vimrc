@@ -52,8 +52,7 @@ Plug 'artnez/vim-wipeout'
 Plug 'godlygeek/tabular' " required by plasticboy/vim-markdown
 Plug 'easymotion/vim-easymotion'
 " Install:
-" dnf install the_silver_searcher (Debian: silversearcher-ag)
-" dnf install fzf
+" dnf install fzf ripgrep ruby highlight
 Plug 'junegunn/fzf.vim'
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 Plug 'sjl/gundo.vim'
@@ -66,10 +65,8 @@ Plug 'wellle/tmux-complete.vim' " depends on neocomplete/deoplete
 Plug 'chrisbra/NrrwRgn'
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 Plug 'jpalardy/vim-slime'
-" Install: apt-get install exuberant-ctags (dnf install ctags)
-Plug 'ludovicchabant/vim-gutentags'
 Plug 'luochen1990/rainbow'
-" requires exuberant-ctags
+" Install: apt-get install exuberant-ctags (dnf install ctags)
 Plug 'majutsushi/tagbar'
 " javascript-related post-install actions go here
 Plug 'pangloss/vim-javascript', { 'do': 'npm install prettier' }
@@ -123,16 +120,6 @@ endif
 
 
 "
-" Ag/grep
-"
-" use ag over grep
-if executable('ag')
-  set grepprg=ag\ --nogroup\ --nocolor\ --vimgrep
-  set grepformat^=%f:%l:%c:%m " file:line:column:message
-endif
-
-
-"
 " netrw
 "
 nnoremap <F2> :Explore<CR>
@@ -157,14 +144,30 @@ nnoremap <F8> :TagbarToggle<CR>
 
 
 "
-" fzf
+" fzf/ripgrep
 "
 nnoremap <C-t> :Files<CR>
 nnoremap <leader>ww :Windows<CR>
 " display all lines with keyword under cursor
 nnoremap <leader>ff :BLines '<C-r><C-w><CR>
 " search for word under cursor
-nnoremap <leader>gr :Ag <C-r><C-w><CR>
+nnoremap <leader>gr :Rg <C-r><C-w><CR>
+
+" use ripgrep over grep
+set grepprg=rg\ --vimgrep
+set grepformat^=%f:%l:%c:%m " file:line:column:message
+
+" Files with preview on by default
+command! -bang -nargs=? -complete=dir Files
+  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview('right:50%', '?'), <bang>0)
+
+" ripgrep with preview off by default
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always ' . <q-args>, 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
 
 
 "
@@ -416,9 +419,14 @@ command! Rmw %s/\s\+$//e
 command! SpellEN :setlocal spell spelllang=en_us
 command! SpellOff :setlocal nospell
 
-" R = command output in new tab
+" command output in new tab
 command! -nargs=* -complete=shellcmd Rr tabnew<Bar>setlocal buftype=nofile bufhidden=hide noswapfile nowrap<Bar>0r !<args>
 command! -nargs=* -complete=shellcmd R  tabnew<Bar>setlocal buftype=nofile bufhidden=hide noswapfile nowrap<Bar>exe '0r !<args>'<Bar>filetype detect
+
+" cd to dir vim was started from
+let g:my_startup_dir = expand('%:p:h')
+command! Cdstart :exe 'lcd ' . g:my_startup_dir
+
 
 " }}}
 
