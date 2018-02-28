@@ -1,6 +1,6 @@
 # ~/.tmuxinator/cfme.yml
 
-name: cfme
+name: cfme1
 root: ~/Source/repos/cfme_tests
 
 # Optional tmux socket
