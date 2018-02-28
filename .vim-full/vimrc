@@ -419,9 +419,16 @@ command! Rmw %s/\s\+$//e
 command! SpellEN :setlocal spell spelllang=en_us
 command! SpellOff :setlocal nospell
 
-" command output in new tab
-command! -nargs=* -complete=shellcmd Rr tabnew<Bar>setlocal buftype=nofile bufhidden=hide noswapfile nowrap<Bar>0r !<args>
-command! -nargs=* -complete=shellcmd R  tabnew<Bar>setlocal buftype=nofile bufhidden=hide noswapfile nowrap<Bar>exe '0r !<args>'<Bar>filetype detect
+" run command and display it's output in new split
+function! RunInNew(to_run, bang)
+  new
+  setlocal buftype=nofile bufhidden=hide noswapfile nowrap
+  exe '0r !' . a:to_run
+  if !a:bang
+    filetype detect
+  endif
+endfunction
+command! -nargs=+ -complete=shellcmd -bang R :call RunInNew(<q-args>, <bang>0)
 
 " cd to dir vim was started from
 let g:my_startup_dir = expand('%:p:h')
