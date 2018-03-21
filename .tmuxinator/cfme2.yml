@@ -20,7 +20,7 @@ pre_window: . ~/.local/python_venvs/cfme_tests/bin/activate
 # tmux_command: byobu
 
 # Specifies (by name or index) which window will be selected on project startup. If not set, the first window is used.
-startup_window: shell1
+startup_window: editor
 
 # Controls whether the tmux session should be attached to automatically. Defaults to true.
 # attach: false
@@ -31,9 +31,13 @@ startup_window: shell1
 windows:
   - sel: python cfme/utils/dockerbot/sel_container.py --watch --webdriver 4445 --vnc 5901
   - log: tail -f log/cfme.log
-  - shell1:
-    - tmux set-window-option -t2 automatic-rename on
-    - clear
-  - shell2:
+  - editor:
+    - tmuxss
+    - tmux send-keys -t '.1' '. ~/.local/python_venvs/cfme_tests/bin/activate' C-m
+    - vim
+  - shell:
     - tmux set-window-option -t3 automatic-rename on
+    - clear
+  - shell:
+    - tmux set-window-option -t4 automatic-rename on
     - clear
