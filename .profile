@@ -33,6 +33,7 @@ pathmunge "$HOME/.local/bin"
 # set PATH so it includes user's private bin if it exists
 pathmunge "$HOME/bin"
 
+unset -f pathmunge
 export PATH
 
 # fix ugly fonts in java swing
@@ -41,8 +42,6 @@ export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on"
 
 # Midnight Commander skin
 export MC_SKIN=/usr/share/mc/skins/modarin256-defbg.ini
-
-unset -f pathmunge
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
