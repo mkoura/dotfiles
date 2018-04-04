@@ -49,6 +49,8 @@ call plug#begin(mybasedir . '/plugged')
 " general
 Plug 'altercation/vim-colors-solarized'
 Plug 'artnez/vim-wipeout'
+" Install: dnf install curl
+Plug 'diepm/vim-rest-console'
 Plug 'godlygeek/tabular' " required by plasticboy/vim-markdown
 Plug 'easymotion/vim-easymotion'
 " Install:
@@ -179,8 +181,9 @@ let g:jedi#auto_vim_configuration = 0
 let g:jedi#smart_auto_mappings = 0
 
 " display function call signatures in command line
-set noshowmode
-let g:jedi#show_call_signatures = 2
+"set noshowmode
+"let g:jedi#show_call_signatures = 2
+let g:jedi#show_call_signatures = 0
 
 let g:jedi#goto_command = '<C-]>'
 let g:jedi#goto_assignments_command = '<leader>ja'
@@ -259,7 +262,7 @@ let g:rainbow_active = 1
 let g:rainbow_conf = {
   \   'ctermfgs': ['brown', 'Darkblue', 'darkgray', 'darkgreen'],
   \   'guifgs': ['RoyalBlue3', 'SeaGreen3', 'DarkOrchid3', 'firebrick3'],
-  \}
+\}
 
 
 "
@@ -313,6 +316,19 @@ inoremap <expr><Up> pumvisible() ? "\<C-p>" : "\<Up>"
 "
 " no need for additional trigger when using neocomplete/deoplete
 let g:tmuxcomplete#trigger = ''
+
+
+"
+" vim-rest-console
+"
+let g:vrc_curl_opts = {
+  \ '--connect-timeout' : 10,
+  \ '--max-time': 60,
+  \ '--ipv4': '',
+  \ '-sS': '',
+  \ '-i': '',
+  \ '-k': '',
+\}
 
 " }}}
 
