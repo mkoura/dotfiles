@@ -122,12 +122,6 @@ endif
 
 
 "
-" netrw
-"
-nnoremap <F2> :Explore<CR>
-
-
-"
 " matchit
 "
 runtime macros/matchit.vim
@@ -281,7 +275,7 @@ if has('nvim')
   let g:deoplete#enable_at_startup = 1
   let g:deoplete#enable_smart_case = 1
   " change the source rank
-  call deoplete#custom#set('jedi', 'rank', 9999)
+  call deoplete#custom#source('jedi', 'rank', 9999)
 
 else
 
@@ -326,9 +320,11 @@ let g:vrc_curl_opts = {
   \ '--max-time': 60,
   \ '--ipv4': '',
   \ '-sS': '',
-  \ '-i': '',
   \ '-k': '',
 \}
+
+" expect application/json when header is not included
+let g:vrc_response_default_content_type = 'application/json'
 
 " }}}
 
