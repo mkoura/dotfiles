@@ -19,7 +19,7 @@ pre_window: . ~/.local/python_venvs/vmaas/bin/activate
 # tmux_command: byobu
 
 # Specifies (by name or index) which window will be selected on project startup. If not set, the first window is used.
-startup_window: editor
+startup_window: srv
 
 # Controls whether the tmux session should be attached to automatically. Defaults to true.
 # attach: false
@@ -29,12 +29,11 @@ startup_window: editor
 
 windows:
   - srv:
-      - deactivate
-      - cd ~/Source/repos/vmaas
-      - docker-compose up
+    - deactivate
+    - cd ~/Source/repos/vmaas
   - editor:
-    - tmuxss
-    - tmux send-keys -t '.1' '. ~/.local/python_venvs/vmaas/bin/activate' C-m
+    - tmuxss -t1
+    - tmux send-keys -t '1.1' '. ~/.local/python_venvs/vmaas/bin/activate' C-m
     - vim
   - shell:
     - tmux set-window-option -t2 automatic-rename on
