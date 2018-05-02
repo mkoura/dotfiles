@@ -245,7 +245,7 @@ let g:airline#extensions#ale#enabled = 1
 " increase delay after which the linters will be run
 let g:ale_lint_delay = 500
 " flake8 args
-let g:ale_python_flake8_args = '--max-line-length=100'
+let g:ale_python_flake8_args = '--max-line-length=100 --max-complexity=10'
 
 
 "
@@ -317,8 +317,7 @@ let g:tmuxcomplete#trigger = ''
 "
 let g:vrc_curl_opts = {
   \ '--connect-timeout' : 10,
-  \ '--max-time': 60,
-  \ '--ipv4': '',
+  \ '--max-time': 20,
   \ '-sS': '',
   \ '-k': '',
 \}
@@ -445,6 +444,12 @@ command! -nargs=+ -complete=shellcmd -bang R :call RunInNew(<q-args>, <bang>0)
 " cd to dir vim was started from
 let g:my_startup_dir = expand('%:p:h')
 command! Cdstart :exe 'lcd ' . g:my_startup_dir
+
+" format XML
+command! -range=% XMLpretty <line1>,<line2>!python3 -c "import xml.dom.minidom, sys; print(xml.dom.minidom.parse(sys.stdin).toprettyxml())"
+
+" format JSON
+command! -range=% JSONpretty <line1>,<line2>!python3 -m json.tool
 
 
 " }}}
