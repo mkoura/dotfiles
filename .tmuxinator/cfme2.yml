@@ -29,7 +29,7 @@ startup_window: editor
 # post: tmux -CC attach -t cfme2
 
 windows:
-  - sel: python cfme/utils/dockerbot/sel_container.py --watch --webdriver 4445 --vnc 5901
+  - sel: miq-selenium-container --watch --webdriver 4445 --vnc 5901
   - log: tail -f log/cfme.log
   - editor:
     - tmuxss
